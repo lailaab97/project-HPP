@@ -55,3 +55,30 @@ Final Output
 ```
 Spain 16, 10
 ```
+
+_Example 3_
+
+Input: *Italian data*
+```
+1, "Gary", "ADAMS", 2008-06-04 00:00:00, 1577483620.7382095, unknown, "escalade avec mon fils au marchÃ©"
+6, "Dennis", "YOUNG", 1989-05-21 00:00:00, 1583878802.8757234, 1, "travail avec le grand-pÃ¨re en ville"
+10, "Samuel", "PEREZ", 1977-07-13 00:00:00, 1586186124.581804, 6, "apÃ©ro avec le pÃ¨re au super machÃ©"
+12, "Joshua", "EDWARDS", 1945-12-09 00:00:00, 1587038912.6391647, 1, "apÃ©ro avec mon fils Ã  la salle de gym"
+15, "Daniel", "HERNANDEZ", 1962-09-25 00:00:00, 1588098882.9528382, unknown, "course Ã  pieds avec une copine au super machÃ©"
+17, "Kelly", "RUIZ", 1988-09-15 00:00:00, 1588700149.101882, unknown, "vÃ©lo avec ma mÃ¨re en ville"
+18, "Ronald", "WILLIAMS", 1981-10-08 00:00:00, 1588976154.8079798, unknown, "sport avec le chien Ã  la campagne"
+
+```
+Process
+```
+Step 1 result: Italy 1,10
+Step 2 result: Italy 6,10
+Step 3 result: Italy 10,10
+Step 4 result: Italy 10,4 ; Italy 14,10
+Step 5 result: Italy 15,10
+Step 6 result: Italy 17, 10 ; Italy 18, 10
+```
+Final Output
+```
+Italy 17, 10 ; Italy 18, 10
+```
