@@ -1,8 +1,8 @@
 # project-HPP
 
-**Test Cases Examples**
+_Test Cases Examples_
 
-_Example 1_
+**Example 1**
 
 Input: *French data*
 ```
@@ -28,17 +28,17 @@ France 19, 10
 ```
 
 
-_Example 2_
+**Example 2**
 
 Input: *Spanish data*
 ```
-0, "Angela", "HARRIS", 1986-08-19 00:00:00, 1573945200.0, unknown, "promenade avec ma fille à la salle de gym"
-2, "Michelle", "CHAVEZ", 1963-12-15 00:00:00, 1579553464.1818361, 0, "escalade avec le fils au super maché"
-3, "Donald", "RICHARDSON", 1951-06-19 00:00:00, 1581022041.4764192, 0, "promenade avec ma mère au marché"
-7, "Timothy", "JONES", 1993-02-07 00:00:00, 1584560462.2146287, 3, "handball avec mon père à la salle de gym"
-8, "Laura", "ROBERTS", 2007-03-08 00:00:00, 1585161728.3636725, 3, "courses avec le copain au super maché"
-11, "James", "JAMES", 1975-09-25 00:00:00, 1586630305.6582553, 3, "sport avec la mère en grande surface"
-16, "Steven", "ALLEN", 1951-07-07 00:00:00, 1588408363.2841413, 11, "vélo avec la mère en grande surface"
+0, "Angela", "HARRIS", 1986-08-19 00:00:00, 1573945200.0, unknown
+2, "Michelle", "CHAVEZ", 1963-12-15 00:00:00, 1579553464.1818361, 0
+3, "Donald", "RICHARDSON", 1951-06-19 00:00:00, 1581022041.4764192, 0
+7, "Timothy", "JONES", 1993-02-07 00:00:00, 1584560462.2146287, 3
+8, "Laura", "ROBERTS", 2007-03-08 00:00:00, 1585161728.3636725, 3
+11, "James", "JAMES", 1975-09-25 00:00:00, 1586630305.6582553, 3
+16, "Steven", "ALLEN", 1951-07-07 00:00:00, 1588408363.2841413, 11
 
 ```
 Process
@@ -56,17 +56,17 @@ Final Output
 Spain 16, 10
 ```
 
-_Example 3_
+**Example 3**
 
 Input: *Italian data*
 ```
-1, "Gary", "ADAMS", 2008-06-04 00:00:00, 1577483620.7382095, unknown, "escalade avec mon fils au marchÃ©"
-6, "Dennis", "YOUNG", 1989-05-21 00:00:00, 1583878802.8757234, 1, "travail avec le grand-pÃ¨re en ville"
-10, "Samuel", "PEREZ", 1977-07-13 00:00:00, 1586186124.581804, 6, "apÃ©ro avec le pÃ¨re au super machÃ©"
-12, "Joshua", "EDWARDS", 1945-12-09 00:00:00, 1587038912.6391647, 1, "apÃ©ro avec mon fils Ã  la salle de gym"
-15, "Daniel", "HERNANDEZ", 1962-09-25 00:00:00, 1588098882.9528382, unknown, "course Ã  pieds avec une copine au super machÃ©"
-17, "Kelly", "RUIZ", 1988-09-15 00:00:00, 1588700149.101882, unknown, "vÃ©lo avec ma mÃ¨re en ville"
-18, "Ronald", "WILLIAMS", 1981-10-08 00:00:00, 1588976154.8079798, unknown, "sport avec le chien Ã  la campagne"
+1, "Gary", "ADAMS", 2008-06-04 00:00:00, 1577483620.7382095, unknown
+6, "Dennis", "YOUNG", 1989-05-21 00:00:00, 1583878802.8757234, 1
+10, "Samuel", "PEREZ", 1977-07-13 00:00:00, 1586186124.581804, 6
+12, "Joshua", "EDWARDS", 1945-12-09 00:00:00, 1587038912.6391647, 1
+15, "Daniel", "HERNANDEZ", 1962-09-25 00:00:00, 1588098882.9528382, unknown
+17, "Kelly", "RUIZ", 1988-09-15 00:00:00, 1588700149.101882, unknown
+18, "Ronald", "WILLIAMS", 1981-10-08 00:00:00, 1588976154.8079798, unknown
 
 ```
 Process
