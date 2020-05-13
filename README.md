@@ -16,10 +16,10 @@ Input: *French data*
 Process
 ```
 Step 1 result: France 4, 10
-Step 2 result: France 5, 10
-Step 3 result: France , 10
+Step 2 result: France 5, 10; France 4, 4
+Step 3 result: France 9, 10
 Step 4 result: France 13, 10
-Step 5 result: France 13, 10; France 14, 10
+Step 5 result: France 14, 10; France 13, 10
 Step 6 result: France 19, 10
 ```
 Final Output
