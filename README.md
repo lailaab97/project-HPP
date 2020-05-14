@@ -84,12 +84,14 @@ Italy 17, 10 ; Italy 18, 10
 ```
 
 **Final result of the 3 examples above**
+
 Process
 ` ` `
 Step 1 : compare score : All scores are equal
 Step 2 : compare last dates of contamination : France > Italy > Spain
 ` ` `
 Final Output, Top 3 chains of Europe: 
+
 ` ` `
 France 19,10 ; Italy 17,10 ; Italy 18,10
 ` ` `
