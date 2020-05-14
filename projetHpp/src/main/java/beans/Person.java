@@ -237,6 +237,12 @@ public class Person implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Person [person_id=" + person_id + ", diagnosed_ts=" + diagnosed_ts + ", contaminated_by="
+				+ contaminated_by + ", country=" + country + ", score=" + score + "]";
+	}
 	
 	
 
