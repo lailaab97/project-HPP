@@ -1,10 +1,7 @@
 package structure;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import beans.Person;
-
 /**
  * Node represents a node in the non-binary Tree
  * 
@@ -24,9 +21,6 @@ public class Node {
 			 * person: the current node's information; class Person
 			 */
 	    public Person person;//or any other property that the node should contain, like 'info'
-
-
-		
 	    /**
 		 * Constructor
 		 * @param person
@@ -36,7 +30,6 @@ public class Node {
 	    {
 	        person = nodePerson; 
 	    }
-
 	    /**
 		 * Method addChild
 		 * @param childNode
@@ -48,7 +41,6 @@ public class Node {
 					children = new ArrayList<Node>();
 	            childNode.parent=this;
 	            this.children.add(childNode);
-	        
 	    }
 	    /**
 		 * Method addChild
@@ -60,13 +52,14 @@ public class Node {
 			if (children == null)
 				return true;
 			return false;
-			
+
 		}
 		public boolean equals(Node node) {
 			if(this.person.equals(node.person))
 				return true;
 			return false;
 		}
+
 
 		public Node getParent() {
 			return parent;

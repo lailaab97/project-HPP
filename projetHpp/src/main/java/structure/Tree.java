@@ -85,6 +85,24 @@ public class Tree {
     		}
 
     }
+
+    
+    public Node findNode(Node node,int id ) {
+    	
+        if (node.person.getPerson_id() == id) {
+            return node;
+        } else {
+            for (Node child: node.children) {
+                Node result = findNode(child,id);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+    
+
     public Node getRoot() {
   		return root;
   	}
