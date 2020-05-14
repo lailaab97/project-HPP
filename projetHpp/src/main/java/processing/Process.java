@@ -1,5 +1,6 @@
 package processing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,60 +13,70 @@ public class Process{
 
 	
 	public List<Tree> updateScoreTree(int date,Node node, List<Tree> trees) {
-        
-        if (node.isLeaf())
+
+		if (node.isLeaf())
         {   
-            int date_contamination=node.getPerson().getDiagnosed_ts();
-            
-            if (date - date_contamination < 604800)
+	        int date_contamination=node.getPerson().getDiagnosed_ts();
+
+            if (date - date_contamination <= 604800)
             { 
                 node.getPerson().setScore(10);                      
             }
             else
                 {
-                if (( date - date_contamination >=604800 &&  date - date_contamination <1209600))
+                if (( (date - date_contamination) > 604800 &&  (date - date_contamination) <=1209600))
                 {
+                	//System.out.println(node.getPerson().getPerson_id()+" had the score "+node.getPerson().getScore());
                     node.getPerson().setScore(4);  
+                	//System.out.println(node.getPerson().getPerson_id()+" have now the score "+node.getPerson().getScore());
+
                 }
                 else 
                 {
-                    node.getPerson().setScore(0); 
-                    for(Tree t : trees) {
-                    	trees = t.deleteNode(node,trees);
+                    node.getPerson().setScore(0);
+                    for(Tree t : trees) {                    	
+                    	node = t.findNode(node, node.getPerson().getPerson_id());
+                    if(node != null)
+                   {
+                       trees = t.deleteNode(node,trees);
+                       
+                    break;
+                    }
+                    }
+                    	
                     }
                 }
                 }
-        }
+        
         else {
             
           for(Node n : node.children)
         {
-             trees = updateScoreTree(date,n,trees);
+              updateScoreTree(date,n,trees);
         }                                                                  
-    }            
+    }    
         return trees;
     }
 
 	public List<Tree> updateScoreList(int date,List<Tree> trees) {
-        for (Tree tree : trees) {
-
-            trees = updateScoreTree(date,tree.root,trees);
-  }
+		Tree[] treeList= trees.toArray(new Tree[trees.size()]);
+        for (Tree tree : treeList) {
+            updateScoreTree(date,tree.getRoot(),trees);
+        }
         return trees;
         }
 	
 	
 	 
 	 public int generateScore(Node rootNode) {
-		 int sum=rootNode.getPerson().getScore();
+		 int sum = rootNode.getPerson().getScore();
 		 if(!rootNode.isLeaf())
-		 {
-		 for(Node ch : rootNode.children)
-         {
-			 sum += ch.getPerson().getScore();
-			 sum = generateScore(ch);
-         }
-		 }
+			 {
+				 for(Node ch : rootNode.children)
+			         {
+						 sum += generateScore(ch);
+			         }
+			 }
 		 return sum;
 		 
 	 }
@@ -89,6 +100,7 @@ public class Process{
 		 {
 			 Tree tree = new Tree(pNode);
 			 trees.add(tree);
+
 		 }
 		 else
 		 {
@@ -106,14 +118,16 @@ public class Process{
 			 {
 				 Tree tree = new Tree(pNode);
 				 trees.add(tree);
+
 			 }
-		 } 
+		 }
+		 //trees = updateScoreList(person.getDiagnosed_ts(),trees);
 		 return trees;
 
 	 }
 	 
 	 public void output(Map<Person,Integer> map) {
-		 map.forEach((k,v)->System.out.println(k.getCountry()+" , " + k.getPerson_id()+" , " +v));
+		 map.forEach((k,v)-> {System.out.println(k.getCountry()+" , " + k.getPerson_id()+" , " +v);});
 	 }
 	 
 	 

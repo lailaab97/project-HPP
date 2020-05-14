@@ -30,9 +30,9 @@ public class DataParsing {
 	 * @return
 	 */
 	@SuppressWarnings("null")
-	public void fetchCsvFileData(File directory,String file,List<Tree> mainListOfResults) throws FileNotFoundException {
+	public void fetchCsvFileData(File directory,String file) throws FileNotFoundException {
 		
-		mainListOfResults = new ArrayList<Tree>();
+		List<Tree> mainListOfResults = new ArrayList<Tree>();
 		Map<Person, Integer> mapOfIdsAndScores = new HashMap<Person, Integer>(); 
 		Process processLine = new Process() ;
         
@@ -44,8 +44,10 @@ public class DataParsing {
         String delimiter = ", ";		           
 				           
 		try {				           
-			System.out.println(file.toString());     
+			System.out.println(file.toString());   
+			int cpt = 0;
 			while((line = br.readLine()) != null) {
+				cpt++;
 				infos = line.split(delimiter);
 				
 				int person_id;
@@ -69,6 +71,7 @@ public class DataParsing {
 					
 					mainListOfResults = processLine.process(victim, mainListOfResults);
 					mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+					System.out.println("Event "+cpt);
 					processLine.output(mapOfIdsAndScores);
 					//generate()
 					
@@ -84,6 +87,7 @@ public class DataParsing {
 					//TODO
 					mainListOfResults = processLine.process(victim, mainListOfResults);
 					mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+					System.out.println("Event "+cpt);
 					processLine.output(mapOfIdsAndScores);
 					//generate()
 				}
