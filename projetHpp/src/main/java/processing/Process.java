@@ -33,10 +33,10 @@ public class Process{
 		 return sum;
 	 }
 	 
-	 public Map<Integer, Integer> generate(List<Tree> trees,String country) {
-		 Map<Integer, Integer> scores = new HashMap<Integer, Integer>();
+	 public Map<Person, Integer> generate(List<Tree> trees,String country) {
+		 Map<Person, Integer> scores = new HashMap<Person, Integer>();
 		 for(Tree t : trees) {
-			scores.put(t.getRoot().getPerson().getPerson_id(), generateScore(t.getRoot()));
+			scores.put(t.getRoot().getPerson(), generateScore(t.getRoot()));
 	            }
 	        return scores;
 	        		
