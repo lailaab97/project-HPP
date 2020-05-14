@@ -52,28 +52,37 @@ public class Node {
 			if (children == null)
 				return true;
 			return false;
+
 		}
 		public boolean equals(Node node) {
 			if(this.person.equals(node.person))
 				return true;
 			return false;
 		}
+
+
 		public Node getParent() {
 			return parent;
 		}
+
 		public void setParent(Node parent) {
 			this.parent = parent;
 		}
+
 		public List<Node> getChildren() {
 			return children;
 		}
+
 		public void setChildren(List<Node> children) {
 			this.children = children;
 		}
+
 		public Person getPerson() {
 			return person;
 		}
+
 		public void setPerson(Person person) {
 			this.person = person;
 		}
+		
 }
