@@ -89,9 +89,9 @@ Process
 
 ```
 Step 1 : compare score : All scores are equal
-Step 2 : compare last dates of contamination : France > Italy > Spain
+Step 2 : compare last dates of contamination : Spain < Italy < France 
 ```
 Final Output, Top 3 chains of Europe: 
 ```
-France 19,10 ; Italy 17,10 ; Italy 18,10
+Spain 16,10 ; Italy 17,10 ; Italy 18,10
 ```
