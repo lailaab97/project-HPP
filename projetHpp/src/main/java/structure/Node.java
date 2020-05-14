@@ -19,7 +19,7 @@ public class Node {
 		 /**
 			 * children: list of all the current Node children
 			 */
-	    public List<Node> children = new ArrayList<Node>();
+	    public List<Node> children = null;
 		 /**
 			 * person: the current node's information; class Person
 			 */
@@ -34,7 +34,7 @@ public class Node {
 		 */
 	    public Node (Person nodePerson)
 	    {
-	        person=nodePerson; 
+	        person = nodePerson; 
 	    }
 
 	    /**
@@ -44,8 +44,52 @@ public class Node {
 		 */
 		public void addChild(Node childNode)
 	    {
+				if(children == null)
+					children = new ArrayList<Node>();
 	            childNode.parent=this;
 	            this.children.add(childNode);
 	        
 	    }
+	    /**
+		 * Method addChild
+		 * @param 
+		 * @return boolean
+		 */		
+		public boolean isLeaf()
+		{
+			if (children == null)
+				return true;
+			return false;
+			
+		}
+		public boolean equals(Node node) {
+			if(this.person.equals(node.person))
+				return true;
+			return false;
+		}
+
+		public Node getParent() {
+			return parent;
+		}
+
+		public void setParent(Node parent) {
+			this.parent = parent;
+		}
+
+		public List<Node> getChildren() {
+			return children;
+		}
+
+		public void setChildren(List<Node> children) {
+			this.children = children;
+		}
+
+		public Person getPerson() {
+			return person;
+		}
+
+		public void setPerson(Person person) {
+			this.person = person;
+		}
+		
 }
