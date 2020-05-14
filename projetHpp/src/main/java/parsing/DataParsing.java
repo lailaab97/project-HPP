@@ -6,9 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import beans.Person;
 import structure.Tree;
+import processing.Process;
 
 
 /**
@@ -25,11 +29,12 @@ public class DataParsing {
 	 * @param directory: directory of input data, file: file name
 	 * @return
 	 */
-	public void fetchCsvFileData(File directory,String file) throws FileNotFoundException {
+	@SuppressWarnings("null")
+	public void fetchCsvFileData(File directory,String file,List<Tree> mainListOfResults) throws FileNotFoundException {
 		
-		
-		ArrayList<Tree> mainListOfResults = new ArrayList<Tree>();
- 	
+		mainListOfResults = new ArrayList<Tree>();
+		Map<Person, Integer> mapOfIdsAndScores = new HashMap<Person, Integer>(); 
+		Process processLine = new Process() ;
         
         FileReader fr = new FileReader(directory+"/"+file);
         BufferedReader br = new BufferedReader(fr);
@@ -61,7 +66,10 @@ public class DataParsing {
 					
 					//System.out.println(victim.toString());     
 					//TODO
-					//process(victim, mainListOfResults);
+					
+					mainListOfResults = processLine.process(victim, mainListOfResults);
+					mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+					processLine.output(mapOfIdsAndScores);
 					//generate()
 					
 					
@@ -74,9 +82,12 @@ public class DataParsing {
 					Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
 					
 					//TODO
-					//process(victim, mainListOfResults);
+					mainListOfResults = processLine.process(victim, mainListOfResults);
+					mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+					processLine.output(mapOfIdsAndScores);
 					//generate()
 				}
+
 		            
 			  }
 			  
