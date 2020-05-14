@@ -12,12 +12,12 @@ public class MainClass {
 		
 		DataParsing parser = new DataParsing();
 		
-		File myDirectory = new File("/Users/macpro/Downloads/data_hpp/20");
+		File myDirectory = new File("C:\\Users\\abdel\\OneDrive\\Bureau\\TSE\\Semestre 8\\HPP\\PROJET HPP\\data (2)\\20");
 		//File[] containingFiles = myDirectory.listFiles();
 		String[] containingFilesNames = myDirectory.list();
 		
 		for (String fileName : containingFilesNames) {
-			  if (fileName.matches("(France|Italy|Spain)+.csv")) {
+			  if (fileName.matches("Italy.csv")) {
 				   try {
 
 					parser.fetchCsvFileData(myDirectory,fileName);
@@ -31,8 +31,4 @@ public class MainClass {
 		}
 	}
 
-
-	public static void main(String args[]) {
-	
-	}
 }

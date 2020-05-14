@@ -30,74 +30,71 @@ public class Tree {
     }
     
     
-    public void deleteNode(Person person, Node rootNode, List<Tree> trees)
+    public List<Tree> deleteNode(Node rootNode, List<Tree> trees)
     {
     	if(rootNode.isLeaf())
     		{
-    		if(rootNode.person.equals(person))
+    			trees.remove(this);
     			rootNode = null;
     		}
     		else
     		{
     			for(Node n : rootNode.children)
     			{
-    				if(n.person.equals(person))
-    					{
     					if(n.isLeaf())
-        					n = null;
+        					{
+    						 trees.remove(this);
+        					}
     					
     					else {
-    					
-    						//We create trees for all the children
-    					for(Node node : n.children)
-    					{
-    						Tree tree = new Tree(node);
-    						trees.add(tree);
-    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-    						traverseTree(node);
-
-    					}
-    					if(n.getParent() != null)
-    					{
-    						
-						//We create trees for all the sisters
-    					for(Node node : n.parent.children)
-    					{
-    						Tree tree = new Tree(node);
-    						trees.add(tree);
-    						if(node.person != null)
-    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-    						traverseTree(node);
-
-    					}   
-    					n.parent = null;
-    					n = null;
-
-
-    					}
-    					}
-    					}
-    					else
-    					{
-    						deleteNode(person, n,trees);
-    					}
-    			}
+	    						//We create trees for all the children
+		    					for(Node node : n.children)
+			    					{
+			    						Tree tree = new Tree(node);
+			    						trees.add(tree);
+			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
+			
+			    					}
+		    					if(n.getParent() != null)
+		    					{	
+									//We create trees for all the sisters
+			    					for(Node node : n.parent.children)
+			    					{
+			    						Tree tree = new Tree(node);
+			    						trees.add(tree);
+			    						if(node.person != null)
+			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
+			
+			    					}   
+		    					}
+		    					trees.remove(this);
+	    					}
+    					//trees.remove(this);
+    			
     		}
+    	}
+    	return trees;
 
     }
 
+    
     
     public Node findNode(Node node,int id ) {
     	
         if (node.person.getPerson_id() == id) {
             return node;
         } else {
+        	
+        	if(!node.isLeaf())
+        	{	
             for (Node child: node.children) {
                 Node result = findNode(child,id);
                 if (result != null) {
                     return result;
                 }
             }
+        }
+        	
         }
         return null;
     }
