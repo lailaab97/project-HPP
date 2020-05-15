@@ -17,7 +17,7 @@ public class MainClass {
 		String[] containingFilesNames = myDirectory.list();
 		
 		for (String fileName : containingFilesNames) {
-			  if (fileName.matches("Italy.csv")) {
+			  if (fileName.matches("(Italy|Spain|France).csv")) {
 				   try {
 
 					parser.fetchCsvFileData(myDirectory,fileName);
