@@ -65,6 +65,7 @@ public class DataParsing {
 					country = file.replace(".csv", "");
 					score = 10;
 					Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
+					System.out.println(victim.getPerson_surname()+victim.getPerson_id());
 					
 					//System.out.println(victim.toString());     
 					//TODO
@@ -83,6 +84,7 @@ public class DataParsing {
 					country = file.replace(".csv", "");
 					score = 10;
 					Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
+					System.out.println(victim.getPerson_surname()+victim.getPerson_id());
 					
 					//TODO
 					mainListOfResults = processLine.process(victim, mainListOfResults);
