@@ -138,9 +138,7 @@ public class Process{
 	 }
 	 
 	 
-	 public void output(Map<Person,Integer> map) {
-		 map.forEach((k,v)-> {System.out.println(k.getCountry()+" , " + k.getPerson_id()+" , " +v);});
-	 }
+
 	 
 	 
 }
