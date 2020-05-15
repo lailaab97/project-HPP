@@ -25,7 +25,7 @@ import processing.Process;
 
 
 /**
- * DataParsing reads CSV input files and calls suitable methods to process the generated data
+ * DataParsing reads CSV input files, calls suitable methods to process the generated data and stores the result in a csv ouput file
  * 
  * @author Team
  * 
@@ -34,24 +34,24 @@ public class DataParsing {
 	
 	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
 	
-	
+	// Map that contains the results of each proccessed input data line
 	Map<Person, Integer> mapOfIdsAndScores = new HashMap<Person, Integer>(); 
 
 	
 	/**
 	 * This method Reads and Parses CSV files
 	 * @param directory: directory of input data, file: file name
-	 * @return
+	 * @return void
 	 */
 	
-	public void fetchCsvFileData(File directory,String file) throws FileNotFoundException {
+	public void fetchCsvFileData(File directory, String file, String SlashOrTwoBackSlash) throws FileNotFoundException {
 		
 		List<Tree> mainListOfResults = new ArrayList<Tree>();
 		Process processLine = new Process() ;
         
 
 		// Reader to read the csv inout file 
-        FileReader fr = new FileReader( directory+"/"+file );
+        FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
         BufferedReader br = new BufferedReader( fr );
 		      
  
@@ -70,7 +70,7 @@ public class DataParsing {
 			int cpt = 0;
 			
 			    	// Writer to write in the csv output file
-					FileWriter fw = new FileWriter( directory+"/"+"output.csv", true );
+					FileWriter fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
 			        BufferedWriter bw = new BufferedWriter(fw); 
 
 
@@ -136,12 +136,20 @@ public class DataParsing {
             }
 				   			   
 			   
-			}
-		
+			
+	}
+	
+	
+	 /** 
+	  * Stores final output data for each line in a csv file
+	 * @param csvWriter: the buffer writer
+	 * @return void
+	 */	
 	public void StoreResultData(BufferedWriter csvWriter){
 						
 				String dataLine = null;
 				
+				// Get the the processed inormations in a suitable format
 				for (Map.Entry<Person, Integer> mapElement : mapOfIdsAndScores.entrySet()) { 
 					
 		            Person key = (Person)mapElement.getKey(); 
@@ -156,6 +164,7 @@ public class DataParsing {
 		        } 
 		
 				try {
+					// Write the line result in the output file
 					csvWriter.write(dataLine+"\n");
 		    	    csvWriter.flush();
 		    	    
@@ -169,40 +178,45 @@ public class DataParsing {
 		
 	}
 
-	
+		
 	 /** 
 	  * Fetches the data file path
-	 * @param keysLocation : path to path.properties file in resources
-	 * @return String: path
+	 * @param Location : path to path.properties file in resources
+	 * @return List<String>: path, and / or \\ depending on OS
 	 */
-	public String getMainPath(String keysLocation) {
-	    
-		String line = null;
-		Path path;
-		
-		try {
+	public List<String> getMainPath(String Location) {
+		    
+			String line = null;
+			Path path;
+			List<String> properties = new ArrayList<>();
+
 			
-			path = Paths.get(ClassLoader.getSystemResource(keysLocation).toURI());
-			
-			try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
-			       
-		      
-		      // Reading the first line to get the path
-	    	  line = reader.readLine();
-	    	  if (line == null) {
-	    		  throw new Exception("incorrect inormations : the path is missing in the properties file");
-	    	  }
-		      
-		   
-		    }catch(Exception ex){
-		    	logger.log(Level.SEVERE, "failed to read properties file : " + ex.toString());
-		    }
-			
-		} catch (URISyntaxException e) {
-			logger.log(Level.SEVERE, "failed to get properties file path : " + e.toString());
+			try {
+				
+				path = Paths.get(ClassLoader.getSystemResource(Location).toURI());
+				
+				try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
+				       
+			      
+			      // Reading the first two lines to get the path
+				      for(int i = 0; i < 2; i++) {
+				    	  line = reader.readLine();
+				    	  if (line == null) {
+				    		  throw new Exception("incorrect credentials file : consumer keys are missing");
+				    	  }
+				    	  properties.add(line);
+				      }
+			      
+			   
+			    }catch(Exception ex){
+			    	logger.log(Level.SEVERE, "failed to read properties file : " + ex.toString());
+			    }
+				
+			} catch (URISyntaxException e) {
+				logger.log(Level.SEVERE, "failed to get properties file path : " + e.toString());
+			}
+		    
+		    return properties;
 		}
-	    
-	    return line;
-	}
 
 }
