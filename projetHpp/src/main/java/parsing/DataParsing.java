@@ -149,11 +149,11 @@ public class DataParsing {
 		      
 		   
 		    }catch(Exception ex){
-		    	logger.log(Level.SEVERE, "failed to read credentials file : " + ex.toString());
+		    	logger.log(Level.SEVERE, "failed to read properties file : " + ex.toString());
 		    }
 			
 		} catch (URISyntaxException e) {
-			logger.log(Level.SEVERE, "failed to get credentials file path : " + e.toString());
+			logger.log(Level.SEVERE, "failed to get properties file path : " + e.toString());
 		}
 	    
 	    return line;
