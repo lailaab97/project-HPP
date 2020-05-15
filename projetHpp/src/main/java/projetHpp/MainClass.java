@@ -11,9 +11,9 @@ public class MainClass {
 	public static void main(String[] args) { 
 		
 		DataParsing parser = new DataParsing();
-		
-		File myDirectory = new File("C:\\Users\\abdel\\OneDrive\\Bureau\\TSE\\Semestre 8\\HPP\\PROJET HPP\\data (2)\\20");
-		//File[] containingFiles = myDirectory.listFiles();
+		String path = parser.getMainPath("properties/path.properties");
+
+		File myDirectory = new File(path);
 		String[] containingFilesNames = myDirectory.list();
 		
 		for (String fileName : containingFilesNames) {
