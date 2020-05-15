@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -19,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import beans.Person;
 import structure.Tree;
@@ -53,17 +50,17 @@ public class DataParsing {
 		Process processLine = new Process() ;
         
 
-		
-        FileReader fr = new FileReader(directory+"/"+file);
-        BufferedReader br = new BufferedReader(fr);
+		// Reader to read the csv inout file 
+        FileReader fr = new FileReader( directory+"/"+file );
+        BufferedReader br = new BufferedReader( fr );
 		      
+ 
 		String line = "";
-		String[] infos;
+		String[] lineInfos;
         String delimiter = ", ";		           
 				           
 		try {			
 			
-			//System.out.println(file.toString()); 
 			
 			int person_id;
 			int diagnosed_ts;
@@ -72,23 +69,22 @@ public class DataParsing {
 			int score;
 			int cpt = 0;
 			
-			    	
-					FileWriter fw = new FileWriter(directory+"/"+"output.csv", true);
+			    	// Writer to write in the csv output file
+					FileWriter fw = new FileWriter( directory+"/"+"output.csv", true );
 			        BufferedWriter bw = new BufferedWriter(fw); 
 
 
-					
-					while((line = br.readLine()) != null) {
-						cpt++;
-						infos = line.split(delimiter);
+					// Access to input file lines and process them line by line
+					while(( line = br.readLine()) != null ) {
 						
-		
+						cpt++;
+						lineInfos = line.split(delimiter);
 		
 						// if the contaminer is unknown
-						if(infos[5].contentEquals("unknown")){
+						if(lineInfos[5].contentEquals("unknown")){
 							
-							person_id = Integer.parseInt(infos[0]);
-							diagnosed_ts = Math.round(Float.parseFloat(infos[4]));
+							person_id = Integer.parseInt(lineInfos[0]);
+							diagnosed_ts = Math.round(Float.parseFloat(lineInfos[4]));
 							contaminated_by = -1;
 							country = file.replace(".csv", "");
 							score = 10;
@@ -96,26 +92,25 @@ public class DataParsing {
 							// Creation of a new Person whose contaminer is unknow
 							Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
 				
-							
+							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
 							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
 							
 							//Debug
-							System.out.println("Event "+cpt);
-		
-							
+							System.out.println("Event "+cpt);						
 							
 						}else {
-							person_id = Integer.parseInt(infos[0]);
-							diagnosed_ts = Math.round(Float.parseFloat(infos[4]));
-							contaminated_by = Integer.parseInt(infos[5]);
+							
+							person_id = Integer.parseInt(lineInfos[0]);
+							diagnosed_ts = Math.round(Float.parseFloat(lineInfos[4]));
+							contaminated_by = Integer.parseInt(lineInfos[5]);
 							country = file.replace(".csv", "");
 							score = 10;
 							
 							// Creation of a new Person
 							Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
 							
-							//TODO
+							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
 							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
 							
@@ -124,12 +119,15 @@ public class DataParsing {
 		
 						}
 						
-						StoreResultData(bw, mapOfIdsAndScores);
+						
+						// Storing proccesd data fort the current line in the current country
+						StoreResultData(bw);
 				            
 					  }
 
-			  
+			// Closing access to files  
 			br.close();
+			bw.close();
 			            
         	} catch (FileNotFoundException e) {
         		e.printStackTrace();
@@ -140,11 +138,11 @@ public class DataParsing {
 			   
 			}
 		
-	public void StoreResultData(BufferedWriter csvWriter,Map<Person, Integer> map){
+	public void StoreResultData(BufferedWriter csvWriter){
 						
 				String dataLine = null;
 				
-				for (Map.Entry<Person, Integer> mapElement : map.entrySet()) { 
+				for (Map.Entry<Person, Integer> mapElement : mapOfIdsAndScores.entrySet()) { 
 					
 		            Person key = (Person)mapElement.getKey(); 
 		            int value = ((int)mapElement.getValue());
@@ -163,6 +161,7 @@ public class DataParsing {
 		    	    
 					//Debug
 		    	    System.out.println(dataLine);
+		    	    
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -172,9 +171,9 @@ public class DataParsing {
 
 	
 	 /** 
-	  * Récupere le chemin du jeu de données
-	 * @param keysLocation : le chemin vers le fichier de path.properties
-	 * @return un string: le chemin recherché
+	  * Fetches the data file path
+	 * @param keysLocation : path to path.properties file in resources
+	 * @return String: path
 	 */
 	public String getMainPath(String keysLocation) {
 	    
@@ -188,7 +187,7 @@ public class DataParsing {
 			try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
 			       
 		      
-		      // Lecture des ma première ligne (qui correspondent aux chemin des fichiers de données)
+		      // Reading the first line to get the path
 	    	  line = reader.readLine();
 	    	  if (line == null) {
 	    		  throw new Exception("incorrect inormations : the path is missing in the properties file");
