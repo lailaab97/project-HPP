@@ -32,47 +32,14 @@ public class Tree {
     
     public List<Tree> deleteNode(Node rootNode, List<Tree> trees)
     {
-    	if(rootNode.isLeaf())
-    		{
-    			trees.remove(this);
-    			rootNode = null;
-    		}
-    		else
-    		{
-    			for(Node n : rootNode.children)
-    			{
-    					if(n.isLeaf())
-        					{
-    						 trees.remove(this);
-        					}
-    					
-    					else {
-	    						//We create trees for all the children
-		    					for(Node node : n.children)
-			    					{
-			    						Tree tree = new Tree(node);
-			    						trees.add(tree);
-			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-			
-			    					}
-		    					if(n.getParent() != null)
-		    					{	
-									//We create trees for all the sisters
-			    					for(Node node : n.parent.children)
-			    					{
-			    						Tree tree = new Tree(node);
-			    						trees.add(tree);
-			    						if(node.person != null)
-			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-			
-			    					}   
-		    					}
-		    					trees.remove(this);
+    	if(!rootNode.isLeaf()) {
+    			for(Node n : rootNode.children) {
+    				Tree tree = new Tree(n);
+			    	trees.add(tree);
+			    	System.out.println("A new Tree of root "+n.person.getPerson_id()+" is created");			
+			    					}		    					
 	    					}
-    					//trees.remove(this);
-    			
-    		}
-    	}
+         trees.remove(this);   			  		   	
     	return trees;
 
     }
@@ -109,47 +76,4 @@ public class Tree {
   	}
 
   
-
-	public static void main(String args[])
-    {	
-		
-		List<Tree> trees =new ArrayList<Tree>();
-		List<Person> persons = new ArrayList<Person>();
-		Person person = new Person(4, 1582161158, -1,"France",10);
-		persons.add(person);
-		Person person1 = new Person(5, 1583091884, -1, "France", 10);
-		persons.add(person1);
-		Person person2 = new Person(9, 1585699579, 4, "France", 10);
-		persons.add(person2);
-		Person person3 = new Person(13, 1587417223, 4, "France", 10);
-		persons.add(person3);
-		Person person4 = new Person(14, 1587769422, 5, "France", 10);
-		persons.add(person4);
-		for(Person p: persons) {
-		if(p.getContaminated_by() == -1)
-		{
-			Node rootNode = new Node(p);
-	    	Tree tree = new Tree(rootNode);
-	    	trees.add(tree);
-		}
-		}
-	    Node personNode = new Node(person);
-
-		
-		Tree tree = new Tree(personNode);
-	    Node person1Node = new Node(person1);
-	    Node person2Node = new Node(person2);
-	    Node person3Node = new Node(person3);
-	    Node person4Node = new Node(person4);
-	    
-	    //tree.getRoot().addChild(person1Node);
-	  //person1Node.addChild(person2Node);
-	  //tree.root.addChild(person3Node);
-	  //person1Node.addChild(person4Node);
-	  // tree.deleteNode(person1,personNode,trees);
-	  //tree.traverseTree(tree.root);
-	    //System.out.println("the parent of 4 is "+person4Node.getParent().person.getPerson_id());
-	    for(Tree t: trees)
-	    System.out.println("My root is : "+t.getRoot().getPerson().getPerson_id());
-    }
 }
