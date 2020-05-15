@@ -5,10 +5,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import beans.Person;
 import structure.Tree;
@@ -22,6 +29,8 @@ import processing.Process;
  * 
  */
 public class DataParsing {
+	
+	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
 
 	
 	/**
@@ -29,6 +38,7 @@ public class DataParsing {
 	 * @param directory: directory of input data, file: file name
 	 * @return
 	 */
+	
 	@SuppressWarnings("null")
 	public void fetchCsvFileData(File directory,String file) throws FileNotFoundException {
 		
@@ -43,18 +53,21 @@ public class DataParsing {
 		String[] infos;
         String delimiter = ", ";		           
 				           
-		try {				           
-			System.out.println(file.toString());   
+		try {			
+			
+			//System.out.println(file.toString()); 
+			
+			int person_id;
+			int diagnosed_ts;
+			int contaminated_by ;
+			String country;
+			int score;
 			int cpt = 0;
 			while((line = br.readLine()) != null) {
 				cpt++;
 				infos = line.split(delimiter);
 				
-				int person_id;
-				int diagnosed_ts;
-				int contaminated_by ;
-				String country;
-				int score;
+
 
 				// if the contaminer is unknown
 				if(infos[5].contentEquals("unknown")){
@@ -110,5 +123,40 @@ public class DataParsing {
 		
 	}
 	
+	
+	 /** 
+	  * Récupere le chemin du jeu de données
+	 * @param keysLocation : le chemin vers le fichier de path.properties
+	 * @return un string: le chemin recherché
+	 */
+	public String getMainPath(String keysLocation) {
+	    
+		String line = null;
+		Path path;
+		
+		try {
+			
+			path = Paths.get(ClassLoader.getSystemResource(keysLocation).toURI());
+			
+			try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
+			       
+		      
+		      // Lecture des ma première ligne (qui correspondent aux chemin des fichiers de données)
+	    	  line = reader.readLine();
+	    	  if (line == null) {
+	    		  throw new Exception("incorrect inormations : the path is missing in the properties file");
+	    	  }
+		      
+		   
+		    }catch(Exception ex){
+		    	logger.log(Level.SEVERE, "failed to read credentials file : " + ex.toString());
+		    }
+			
+		} catch (URISyntaxException e) {
+			logger.log(Level.SEVERE, "failed to get credentials file path : " + e.toString());
+		}
+	    
+	    return line;
+	}
 
 }
