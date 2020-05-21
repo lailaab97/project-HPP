@@ -48,7 +48,7 @@ public class Process{
                 }        
                 }
         if (!node.isLeaf())    
-        {  for(Node n : node.children)
+        {  for(Node n : node.getChildren())
         {
               updateScoreTree(date,n,trees);
         }                                                                  
