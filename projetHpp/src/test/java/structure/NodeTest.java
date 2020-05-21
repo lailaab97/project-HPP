@@ -39,8 +39,8 @@ public class NodeTest {
 		node1.addChild(node2);
 		node1.addChild(node3);
 		node2.addChild(node4);
-		Assert.assertEquals(node1.children.size(),2);
-		Assert.assertEquals(node2.children.size(),1);
+		Assert.assertEquals(node1.getChildren().size(),2);
+		Assert.assertEquals(node2.getChildren().size(),1);
 		
 	}
 
@@ -55,7 +55,7 @@ public class NodeTest {
 	@Test
 	public void testGetParent() {
 		node1.addChild(node2);
-		Assert.assertEquals(node2.parent,node1);
+		Assert.assertEquals(node2.getParent(),node1);
 		
 	}
 	
