@@ -7,7 +7,7 @@ import beans.Person;
 
 public class Tree {
 
-    public Node root;
+    private Node root;
     
     public Tree(Node nodePerson)
     {
@@ -18,10 +18,10 @@ public class Tree {
     {
     	if(rootNode!= null)
     	{
-        System.out.println(rootNode.person.getPerson_id());        
+        System.out.println(rootNode.getPerson().getPerson_id());        
         	if(!rootNode.isLeaf() & rootNode != null)
              {System.out.println("|");
-        		for(Node ch : rootNode.children)
+        		for(Node ch : rootNode.getChildren())
             		{
             	 		traverseTree(ch);
             		}
@@ -35,121 +35,78 @@ public class Tree {
     	if(rootNode.isLeaf())
     		{
     			trees.remove(this);
-    			rootNode = null;
+    			//rootNode = null;
     		}
     		else
     		{
-    			for(Node n : rootNode.children)
-    			{
-    					if(n.isLeaf())
-        					{
-    						 trees.remove(this);
-        					}
-    					
-    					else {
-	    						//We create trees for all the children
-		    					for(Node node : n.children)
-			    					{
-			    						Tree tree = new Tree(node);
-			    						trees.add(tree);
-			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-			
-			    					}
-		    					if(n.getParent() != null)
-		    					{	
-									//We create trees for all the sisters
-			    					for(Node node : n.parent.children)
-			    					{
-			    						Tree tree = new Tree(node);
-			    						trees.add(tree);
-			    						if(node.person != null)
-			    						System.out.println("A new Tree of root "+node.person.getPerson_id()+" is created");
-			
-			    					}   
+    			for(Node n : rootNode.getChildren())
+    			{		    					
+			    			Tree tree = new Tree(n);
+			    			trees.add(tree);
+			    			System.out.println("A new Tree of root "+n.getPerson().getPerson_id()+" is created");
+			        		if(n.getParent() != null)
+				    					{	
+	        					for(Node n1 : n.getParent().getChildren())
+			    				{
+
+		    						if(!n1.equals(n)) {
+			    						Tree tree1 = new Tree(n1);
+			    						trees.add(tree1);
+			    						if(n1.getPerson() != null)
+			    						System.out.println("A new Tree of root "+n1.getPerson().getPerson_id()+" is created");
+		    						}
 		    					}
+			    					}
+
+			    					}
 		    					trees.remove(this);
-	    					}
-    					//trees.remove(this);
+		
     			
     		}
-    	}
-    	return trees;
+		trees.remove(this);
 
-    }
+    	return trees;
+    	}
+
+
+    
 
     
     
     public Node findNode(Node node,int id ) {
     	
-        if (node.person.getPerson_id() == id) {
+        if (node.getPerson().getPerson_id() == id) {
+        //	System.out.println("FOUND THIS ID "+node.getPerson().getPerson_id());
             return node;
+            
         } else {
         	
         	if(!node.isLeaf())
         	{	
-            for (Node child: node.children) {
+            for (Node child: node.getChildren()) {
                 Node result = findNode(child,id);
                 if (result != null) {
+               // 	System.out.println("FOUND THIS ID"+result.getPerson().getPerson_id());
                     return result;
                 }
             }
         }
         	
         }
+    	//System.out.println("DIDNT FIND THIS ID "+id);
+
         return null;
     }
     
 
     public Node getRoot() {
-  		return root;
+  		return this.root;
   	}
 
   	public void setRoot(Node root) {
   		this.root = root;
   	}
-
   
 
-	public static void main(String args[])
-    {	
-		
-		List<Tree> trees =new ArrayList<Tree>();
-		List<Person> persons = new ArrayList<Person>();
-		Person person = new Person(4, 1582161158, -1,"France",10);
-		persons.add(person);
-		Person person1 = new Person(5, 1583091884, -1, "France", 10);
-		persons.add(person1);
-		Person person2 = new Person(9, 1585699579, 4, "France", 10);
-		persons.add(person2);
-		Person person3 = new Person(13, 1587417223, 4, "France", 10);
-		persons.add(person3);
-		Person person4 = new Person(14, 1587769422, 5, "France", 10);
-		persons.add(person4);
-		for(Person p: persons) {
-		if(p.getContaminated_by() == -1)
-		{
-			Node rootNode = new Node(p);
-	    	Tree tree = new Tree(rootNode);
-	    	trees.add(tree);
-		}
-		}
-	    Node personNode = new Node(person);
 
-		
-		Tree tree = new Tree(personNode);
-	    Node person1Node = new Node(person1);
-	    Node person2Node = new Node(person2);
-	    Node person3Node = new Node(person3);
-	    Node person4Node = new Node(person4);
-	    
-	    //tree.getRoot().addChild(person1Node);
-	  //person1Node.addChild(person2Node);
-	  //tree.root.addChild(person3Node);
-	  //person1Node.addChild(person4Node);
-	  // tree.deleteNode(person1,personNode,trees);
-	  //tree.traverseTree(tree.root);
-	    //System.out.println("the parent of 4 is "+person4Node.getParent().person.getPerson_id());
-	    for(Tree t: trees)
-	    System.out.println("My root is : "+t.getRoot().getPerson().getPerson_id());
-    }
 }

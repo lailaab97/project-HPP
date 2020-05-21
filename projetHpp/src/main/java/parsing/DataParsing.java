@@ -90,14 +90,14 @@ public class DataParsing {
 							score = 10;
 							
 							// Creation of a new Person whose contaminer is unknow
-							Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
+							Person victim = new Person(person_id,diagnosed_ts,contaminated_by ,country,score);
 				
 							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
 							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
 							
 							//Debug
-							System.out.println("Event "+cpt);						
+							System.out.println("*********Event "+cpt);						
 							
 						}else {
 							
@@ -115,13 +115,15 @@ public class DataParsing {
 							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
 							
 							//Debug
-							System.out.println("Event "+cpt);
+							System.out.println("********Event "+cpt);
 		
 						}
 						
 						
 						// Storing proccesd data fort the current line in the current country
-						StoreResultData(bw);
+					//	synchronized (bw) {
+							StoreResultData(bw);
+						//}
 				            
 					  }
 
