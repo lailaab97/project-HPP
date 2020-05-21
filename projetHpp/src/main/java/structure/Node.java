@@ -12,15 +12,15 @@ public class Node {
 	 /**
 		 * parent: to keep track of the chain, this is the parent of the current Node
 		 */
-	    public Node parent;
+	    private Node parent;
 		 /**
 			 * children: list of all the current Node children
 			 */
-	    public List<Node> children = null;
+	    private List<Node> children = null;
 		 /**
 			 * person: the current node's information; class Person
 			 */
-	    public Person person;//or any other property that the node should contain, like 'info'
+	    private Person person;//or any other property that the node should contain, like 'info'
 	    /**
 		 * Constructor
 		 * @param person
@@ -37,10 +37,14 @@ public class Node {
 		 */
 		public void addChild(Node childNode)
 	    {
-				if(children == null)
-					children = new ArrayList<Node>();
-	            childNode.parent=this;
-	            this.children.add(childNode);
+				if(this.getChildren() == null) {
+					this.setChildren( new ArrayList<Node>()); 
+					//System.out.println("This parent had no children");
+				}
+	            childNode.setParent(this);
+	            this.getChildren().add(childNode);
+			//	System.out.println("We added " + childNode.getPerson().getPerson_id() + " to the parent " + this.getPerson().getPerson_id());
+
 	    }
 	    /**
 		 * Method addChild
@@ -49,20 +53,20 @@ public class Node {
 		 */		
 		public boolean isLeaf()
 		{
-			if (children == null)
+			if (this.getChildren() == null)
 				return true;
 			return false;
 
 		}
 		public boolean equals(Node node) {
-			if(this.person.equals(node.person))
+			if(this.getPerson().equals(node.getPerson()))
 				return true;
 			return false;
 		}
 
 
 		public Node getParent() {
-			return parent;
+			return this.parent;
 		}
 
 		public void setParent(Node parent) {
@@ -70,7 +74,7 @@ public class Node {
 		}
 
 		public List<Node> getChildren() {
-			return children;
+			return this.children;
 		}
 
 		public void setChildren(List<Node> children) {
@@ -78,7 +82,7 @@ public class Node {
 		}
 
 		public Person getPerson() {
-			return person;
+			return this.person;
 		}
 
 		public void setPerson(Person person) {

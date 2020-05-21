@@ -15,7 +15,6 @@ import structure.Tree;
  */
 public class Process{
 
-
 	/**
 	 * This method Updates scores of different nodes of the tree
 	 * @param int : the contamination date of the current case
@@ -68,8 +67,54 @@ public class Process{
         for (Tree tree : treeList) {
             updateScoreTree(date,tree.getRoot(),trees);
            
+
         }
-        return trees;
+        else
+            {
+	            if ((  (date - date_contamination) > 1209600))
+	            {
+	                node.getPerson().setScore(0);
+	                Tree tr = null ;
+	                for(Tree t : trees) {
+	                    node = t.findNode(node, node.getPerson().getPerson_id());
+	                    if(node != null)
+	                    	{
+	                    	tr = t;
+	                    	break;}
+	                    	}
+	                
+	                if(node != null)
+		               {
+		                   trees = tr.deleteNode(node,trees);
+		
+		                }
+	              //  return trees;
+
+	             }
+
+            }
+	    if (!node.isLeaf())
+		    {  for(Node n : node.getChildren())
+			    {
+			
+			          trees = updateScoreTree(date,n,trees);
+			    }
+	    }
+	    return trees;
+}
+
+	/**
+     * This method Updates scores of different trees of the list
+     * @param int : the contamination date of the current case
+     * @param List<Tree> : presents the list of trees elements
+     * @return  List<Tree> : presents the updated list of trees elements
+     */
+    public List<Tree> updateScoreList(int date,List<Tree> trees) {
+	        Tree[] treeList= trees.toArray(new Tree[trees.size()]);
+	        for (Tree tree : treeList) {
+	            trees = updateScoreTree(date,tree.getRoot(),trees);
+	        }
+	        return trees;
         }
 	
 	/**
@@ -81,7 +126,7 @@ public class Process{
 		 int sum = rootNode.getPerson().getScore();
 		 if(!rootNode.isLeaf())
 			 {
-				 for(Node ch : rootNode.children)
+				 for(Node ch : rootNode.getChildren())
 			         {
 						 sum += generateScore(ch);
 			         }
@@ -94,6 +139,7 @@ public class Process{
 	 public Map<Person, Integer> generate(List<Tree> trees,String country) {
 		 Map<Person, Integer> scores = new HashMap<Person, Integer>();
 		 for(Tree t : trees) {
+			 if(generateScore(t.getRoot()) != 0)
 			scores.put(t.getRoot().getPerson(), generateScore(t.getRoot()));
 	            }
 	        return scores;
@@ -111,6 +157,7 @@ public class Process{
 		 {
 			 Tree tree = new Tree(pNode);
 			 trees.add(tree);
+			 System.out.println("A new tree of root "+pNode.getPerson().getPerson_id()+" is created !");
 
 		 }
 		 else
@@ -119,20 +166,28 @@ public class Process{
 			 for(Tree t :trees)
 			 {
 				 if(t.findNode(t.getRoot(),id) != null)
+				 {
 					 n = t.findNode(t.getRoot(),id);
+					// System.out.println("found the node " + n.getPerson().getPerson_id()); 
+					 n.addChild(pNode);	
+					// System.out.println("added the child " +n.getChildren().get(0).getPerson().getPerson_id() + " to the tree of root "+ t.getRoot().getPerson().getPerson_id());
+
+					 break;
 				 }
-			 if(n != null)
-			 {
-				 n.addChild(pNode);
+				// System.out.println("Searched all the trees, no "+id+" to be found");
 			 }
-			 else
+
+			 if(n == null)
 			 {
+				// System.out.println("Didn't find the parent " + id);
 				 Tree tree = new Tree(pNode);
 				 trees.add(tree);
-
+				// System.out.println("A new tree of root "+pNode.getPerson().getPerson_id()+" is created !");
 			 }
+
 		 }
-		 
+		 trees = updateScoreList(person.getDiagnosed_ts(),trees);
+
 		 return trees;
 
 	 }
