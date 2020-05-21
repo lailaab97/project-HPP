@@ -45,15 +45,15 @@ public class TreeTest {
 		trees.add(tree);
 		tree.deleteNode(node1, trees);
 		Assert.assertEquals(trees.size(),2);
-		Assert.assertEquals(trees.get(0).root,node2);
-		Assert.assertEquals(trees.get(1).root,node3);
+		Assert.assertEquals(trees.get(0).getRoot(),node2);
+		Assert.assertEquals(trees.get(1).getRoot(),node3);
 	}
 
 	@Test
 	public void testFindNode() {
 		
-		Assert.assertEquals(tree.findNode(tree.root,6),node3);
-		Assert.assertEquals(tree.findNode(tree.root,20),null);
+		Assert.assertEquals(tree.findNode(tree.getRoot(),6),node3);
+		Assert.assertEquals(tree.findNode(tree.getRoot(),20),null);
 	}
 
 	@After

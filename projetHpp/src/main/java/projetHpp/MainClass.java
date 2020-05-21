@@ -42,7 +42,8 @@ public class MainClass {
 
 		
 		for (String fileName : containingFilesNames) {
-			  if (fileName.matches("Italy1.csv")) {
+			//if (fileName.matches("(Italy|France|Spain).csv")) {
+			  if (fileName.matches("Italy.csv")) {
 						try {
 								parser.fetchCsvFileData( myDirectory, fileName, SlashOrTwoBackSlash );
 

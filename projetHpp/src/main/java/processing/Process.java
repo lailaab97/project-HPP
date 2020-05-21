@@ -48,7 +48,7 @@ public class Process{
                 }        
                 }
         if (!node.isLeaf())    
-        {  for(Node n : node.children)
+        {  for(Node n : node.getChildren())
         {
               updateScoreTree(date,n,trees);
         }                                                                  
@@ -56,53 +56,7 @@ public class Process{
         return trees;
     }
 
-	/**
-	 * This method Updates scores of different trees of the list
-	 * @param int : the contamination date of the current case
-	 * @param List<Tree> : presents the list of trees elements
-	 * @return  List<Tree> : presents the updated list of trees elements
-	 */
-	public List<Tree> updateScoreList(int date,List<Tree> trees) {
-		Tree[] treeList= trees.toArray(new Tree[trees.size()]);
-        for (Tree tree : treeList) {
-            updateScoreTree(date,tree.getRoot(),trees);
-           
-
-        }
-        else
-            {
-	            if ((  (date - date_contamination) > 1209600))
-	            {
-	                node.getPerson().setScore(0);
-	                Tree tr = null ;
-	                for(Tree t : trees) {
-	                    node = t.findNode(node, node.getPerson().getPerson_id());
-	                    if(node != null)
-	                    	{
-	                    	tr = t;
-	                    	break;}
-	                    	}
-	                
-	                if(node != null)
-		               {
-		                   trees = tr.deleteNode(node,trees);
-		
-		                }
-	              //  return trees;
-
-	             }
-
-            }
-	    if (!node.isLeaf())
-		    {  for(Node n : node.getChildren())
-			    {
-			
-			          trees = updateScoreTree(date,n,trees);
-			    }
-	    }
-	    return trees;
-}
-
+	
 	/**
      * This method Updates scores of different trees of the list
      * @param int : the contamination date of the current case
