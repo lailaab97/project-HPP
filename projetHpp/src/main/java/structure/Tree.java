@@ -43,7 +43,7 @@ public class Tree {
     	{
     			for(Node n : rootNode.getChildren())
     			{		    					
-    				
+    				// Create new nodes only if they are still up to date
     				if(date - n.getPerson().getDiagnosed_ts()<= 1209600){
 						Tree tree = new Tree(n);
 		    			trees.add(tree);
