@@ -1,5 +1,8 @@
 package processing;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -151,6 +154,218 @@ public class Process{
 		 return trees;
 
 	 }
+	 
+public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfIdsAndScores) {
+		 
+		 Map<Person,Integer> result=new LinkedHashMap<Person,Integer>();
+		 
+		 List<Integer> scores=new ArrayList<>();
+		 scores.addAll(mapOfIdsAndScores.values());
+		 
+		 List<Person> id=new ArrayList<>();
+		 id.addAll(mapOfIdsAndScores.keySet());
+		 
+		 int cmpt=0;
+		 int max=Collections.max(scores);
+		 
+		 while(cmpt<3 && scores.size()!=0 && max!=0) {
+			 
+			 if (Collections.frequency(scores, max)!=1) {
+				 
+				 List<Integer> restOfScores=new ArrayList<>();
+				 List<Person> restOfIds=new ArrayList<>();
+				 List<Integer> dates=new ArrayList<>();
+				 
+				 int index=scores.indexOf(max);
+				 while(index!=-1) {
+					 restOfScores.add(scores.get(index));
+					 restOfIds.add(id.get(index));
+					 dates.add(id.get(index).getDiagnosed_ts());
+					 scores.remove(index);
+					 id.remove(index);
+					 index=scores.indexOf(max);
+				 }
+				 
+				 while(cmpt<3 && restOfScores.size()!=0) {
+					 int min=dates.indexOf(Collections.min(dates));
+					 result.put(restOfIds.get(min),restOfScores.get(min));
+					 restOfScores.remove(min);
+					 restOfIds.remove(min);
+					 dates.remove(min);
+					 cmpt++;
+					 
+				 }
+ 			 }
+			 else {
+				 
+				 int index=scores.indexOf(max);
+				 result.put(id.get(index),max);
+				 cmpt++;
+				 scores.remove(index);
+				 id.remove(index);
+				 
+			 }
+			 
+			 if (scores.size()!=0) {
+				 max=Collections.max(scores);
+			 }
+			 
+		 }
+		 return result;
+	 }
+	 
+	 public Map<Person,Integer> generateFinalResult(Map<Person,Integer> top3Spanish, int spanishContaminationDate, Map<Person,Integer> top3French, int frenchContaminationDate, Map<Person,Integer> top3Italian, int italianContaminationDate ){
+		 
+		 Map<Person,Integer> result= new LinkedHashMap<Person,Integer>();
+		 
+		 
+		 List<ArrayList<Integer>> allScores=new ArrayList<ArrayList<Integer>>();
+		 allScores.add(new ArrayList<>(top3French.values()));
+		 allScores.add(new ArrayList<>(top3Spanish.values()));
+		 allScores.add(new ArrayList<>(top3Italian.values()));
+		 
+		 List<ArrayList<Person>> id=new ArrayList<ArrayList<Person>>();
+		 id.add(new ArrayList<>(top3French.keySet()));
+		 id.add(new ArrayList<>(top3Spanish.keySet()));
+		 id.add(new ArrayList<>(top3Italian.keySet()));
+		 
+		 List<Integer> indexes=new ArrayList<>();
+		 indexes.add(0);
+		 indexes.add(0);
+		 indexes.add(0);
+		 
+		 int index;
+		 int cmpt=0;
+		 
+		 List<Integer> scores=new ArrayList<>();
+		 if (allScores.get(0).size()!=0) {
+			 scores.add(allScores.get(0).get(0));
+		 } else {
+			 scores.add(0);
+		 }
+		 if (allScores.get(1).size()!=0) {
+			 scores.add(allScores.get(1).get(0));
+		 } else {
+			 scores.add(0);
+		 }if (allScores.get(2).size()!=0) {
+			 scores.add(allScores.get(2).get(0));
+		 } else {
+			 scores.add(0);
+		 }
+		 
+		 List<Integer> contaminationDates=new ArrayList<>();
+		 contaminationDates.add(frenchContaminationDate);
+		 contaminationDates.add(spanishContaminationDate);
+		 contaminationDates.add(italianContaminationDate);
+		 
+		 Integer max=Collections.max(scores);
+		 
+		 while(cmpt<3 && max!=0) {
+			 
+			 if (Collections.frequency(scores, max)>1) {
+				 if(Collections.frequency(scores, max)==3) {
+					 int indMax=contaminationDates.indexOf(Collections.max(contaminationDates));
+					 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
+					 int indMed=3-(indMax+indMin);
+					 
+				
+					 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
+					 indexes.set(indMin,indexes.get(indMin)+1);
+					 cmpt++;
+					 
+					 if (cmpt<3) {
+						 result.put((id.get(indMed)).get(indexes.get(indMed)),(allScores.get(indMed)).get(indexes.get(indMed)));
+						 indexes.set(indMed,indexes.get(indMed)+1);
+						 cmpt++;
+					 }
+					 if (cmpt<3) {
+						 result.put((id.get(indMax)).get(indexes.get(indMax)),(allScores.get(indMax)).get(indexes.get(indMax)));
+						 indexes.set(indMax,indexes.get(indMax)+1);
+						 cmpt++;
+					 }
+				 }
+				 else {
+					 
+					 int ind1=scores.indexOf(max);
+					 int ind2=scores.lastIndexOf(max);
+					 if(contaminationDates.get(ind1)<contaminationDates.get(ind2)){
+						 
+						 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
+						 indexes.set(ind1,indexes.get(ind1)+1);
+						 if (indexes.get(ind1)<allScores.get(ind1).size()) {
+							 scores.set(ind1,(allScores.get(ind1)).get(indexes.get(ind1)));
+						 }
+						 else {
+							 scores.set(ind1,0);
+						 }
+						 cmpt++; 
+						 
+						 
+						 if(cmpt<3){
+							 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
+							 indexes.set(ind2,indexes.get(ind2)+1);
+							 if (indexes.get(ind2)<allScores.get(ind2).size()) {
+								 scores.set(ind2,(allScores.get(ind2)).get(indexes.get(ind2)));
+							 }
+							 else {
+								 scores.set(ind2,0);
+							 }
+							 
+							 cmpt++;
+						 }
+					 }
+					 else{
+						 
+						 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
+						 indexes.set(ind2,indexes.get(ind2)+1);
+						 if (indexes.get(ind2)<allScores.get(ind2).size()) {
+							 scores.set(ind2,(allScores.get(ind2)).get(indexes.get(ind2)));
+						 }
+						 else {
+							 scores.set(ind2,0);
+						 }
+						 
+						 cmpt++;
+						 
+						 
+						 if(cmpt<3){
+							 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
+							 indexes.set(ind1,indexes.get(ind1)+1);
+							 if (indexes.get(ind1)<allScores.get(ind1).size()) {
+								 scores.set(ind1,(allScores.get(ind1)).get(indexes.get(ind1)));
+							 }
+							 else {
+								 scores.set(ind1,0);
+							 }
+							 cmpt++; 
+						 }
+						 
+					 }
+					 
+				 }
+			 }
+			 
+			 else {
+				 
+				 index=scores.indexOf(max);
+				 result.put((id.get(index)).get(indexes.get(index)),(allScores.get(index)).get(indexes.get(index)));
+				 indexes.set(index,indexes.get(index)+1);
+				 if (indexes.get(index)<allScores.get(index).size()) {
+					 scores.set(index,(allScores.get(index)).get(indexes.get(index)));
+				 }
+				 else {
+					 scores.set(index,0);
+				 }
+				 cmpt++;
+				 
+			 }
+			 
+			 max=Collections.max(scores);
+		 }
+				 
+		 return result;
+		 
+	} 
 
 	 
 	 
