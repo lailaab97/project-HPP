@@ -1,9 +1,8 @@
 package structure;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import beans.Person;
+
 
 public class Tree {
 
@@ -13,6 +12,14 @@ public class Tree {
     {
         this.root = nodePerson;
     }
+    
+    public Node getRoot() {
+  		return this.root;
+  	}
+
+  	public void setRoot(Node root) {
+  		this.root = root;
+  	}
 
     public void traverseTree(Node rootNode)//depth first
     {
@@ -30,41 +37,28 @@ public class Tree {
     }
     
     
-    public List<Tree> deleteNode(Node rootNode, List<Tree> trees)
+    public List<Tree> deleteNode(int date,Node rootNode, List<Tree> trees)
     {
-    	if(rootNode.isLeaf())
-    		{
-    			trees.remove(this);
-    			//rootNode = null;
-    		}
-    		else
-    		{
+    	if(!rootNode.isLeaf())
+    	{
     			for(Node n : rootNode.getChildren())
     			{		    					
-			    			Tree tree = new Tree(n);
-			    			trees.add(tree);
-			    			System.out.println("A new Tree of root "+n.getPerson().getPerson_id()+" is created");
-			        		if(n.getParent() != null)
-				    					{	
-	        					for(Node n1 : n.getParent().getChildren())
-			    				{
+    				
+    				if(date - n.getPerson().getDiagnosed_ts()<= 1209600){
+						Tree tree = new Tree(n);
+		    			trees.add(tree);
+		    			//System.out.println("A new Tree of root "+n.getPerson().getPerson_id()+" is created++");
 
-		    						if(!n1.equals(n)) {
-			    						Tree tree1 = new Tree(n1);
-			    						trees.add(tree1);
-			    						if(n1.getPerson() != null)
-			    						System.out.println("A new Tree of root "+n1.getPerson().getPerson_id()+" is created");
-		    						}
-		    					}
-			    					}
+    				}
 
-			    					}
-		    					trees.remove(this);
-		
-    			
-    		}
-		trees.remove(this);
-
+    			}
+    	}
+    	if(this.getRoot().getPerson().getPerson_id() == rootNode.getPerson().getPerson_id()) {
+    		trees.remove(this);
+			//System.out.println("The tree of "+this.getRoot().getPerson().getPerson_id()+" is removed");
+    	}
+			        	
+    	
     	return trees;
     	}
 
@@ -74,9 +68,10 @@ public class Tree {
     
     
     public Node findNode(Node node,int id ) {
-    	
+        //System.out.println("LOOKING FOR THIS ID "+node.getPerson().getPerson_id());
+
         if (node.getPerson().getPerson_id() == id) {
-        //	System.out.println("FOUND THIS ID "+node.getPerson().getPerson_id());
+        //System.out.println("FOUND THIS ID "+node.getPerson().getPerson_id());
             return node;
             
         } else {
@@ -86,7 +81,7 @@ public class Tree {
             for (Node child: node.getChildren()) {
                 Node result = findNode(child,id);
                 if (result != null) {
-               // 	System.out.println("FOUND THIS ID"+result.getPerson().getPerson_id());
+               //System.out.println("FOUND THIS ID"+result.getPerson().getPerson_id());
                     return result;
                 }
             }
@@ -99,13 +94,6 @@ public class Tree {
     }
     
 
-    public Node getRoot() {
-  		return this.root;
-  	}
 
-  	public void setRoot(Node root) {
-  		this.root = root;
-  	}
-  
 
 }
