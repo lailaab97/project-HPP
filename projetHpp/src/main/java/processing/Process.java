@@ -24,36 +24,42 @@ public class Process{
 	 */
 	public List<Tree> updateScoreTree(int date,Node node, List<Tree> trees) {
 		
-	        int date_contamination=node.getPerson().getDiagnosed_ts();
-
-            if (( (date - date_contamination) > 604800 &&  (date - date_contamination) <=1209600))
-            { 
-            	node.getPerson().setScore(4);  
-            }
-            else
-                {
-                if ((  (date - date_contamination) > 1209600))
-                {
-                	node.getPerson().setScore(0);
-                    for(Tree t : trees) {                    	
-                    	node = t.findNode(node, node.getPerson().getPerson_id());
-                    if(node != null)
-                   {
-                       trees = t.deleteNode(node,trees);
-                       
-                    break;
-                    }
-                    }
-                    	
-                }        
-                }
-        if (!node.isLeaf())    
-        {  for(Node n : node.getChildren())
-        {
-              updateScoreTree(date,n,trees);
-        }                                                                  
+		int date_contamination=node.getPerson().getDiagnosed_ts();
+		
+	    if (!node.isLeaf())
+		    {  for(Node n : node.getChildren())
+			    {
+			
+			          trees = updateScoreTree(date,n,trees);
+			    }
+	    }
+		
+        if (( (date - date_contamination) > 604800 &&  (date - date_contamination) <= 1209600))
+        { 
+            node.getPerson().setScore(4);
         }
-        return trees;
+        else
+            {
+	            if ((  (date - date_contamination) > 1209600))
+	            {
+	                node.getPerson().setScore(0);
+	                Node nodeToDelete = null;
+	                for(Tree t : trees) {
+
+	                	nodeToDelete = t.findNode(node, node.getPerson().getPerson_id());
+	                    if(nodeToDelete != null)
+	                    {
+	                    	trees = t.deleteNode(date,nodeToDelete,trees);
+	                    	break;
+	                    }
+	                }
+
+
+	             }
+
+            }
+
+	    return trees;
     }
 
 	
@@ -111,11 +117,12 @@ public class Process{
 		 {
 			 Tree tree = new Tree(pNode);
 			 trees.add(tree);
-			 System.out.println("A new tree of root "+pNode.getPerson().getPerson_id()+" is created !");
+			// System.out.println("A new tree of root "+pNode.getPerson().getPerson_id()+" is created !");
 
 		 }
 		 else
 		 {
+			 
 			 Node n = null;
 			 for(Tree t :trees)
 			 {
@@ -140,13 +147,10 @@ public class Process{
 			 }
 
 		 }
-		 trees = updateScoreList(person.getDiagnosed_ts(),trees);
 
 		 return trees;
 
 	 }
-	 
-	 
 
 	 
 	 
