@@ -48,12 +48,11 @@ public class Process{
 
 	                	nodeToDelete = t.findNode(node, node.getPerson().getPerson_id());
 	                    if(nodeToDelete != null)
-	                    	{
-	                		//System.out.println("THIS node is oooooold On my way to delete it "+nodeToDelete.getPerson().getPerson_id());
+	                    {
 	                    	trees = t.deleteNode(date,nodeToDelete,trees);
 	                    	break;
-	                    	}
-	                    	}
+	                    }
+	                }
 
 
 	             }
@@ -129,7 +128,6 @@ public class Process{
 			 {
 				 if(t.findNode(t.getRoot(),id) != null)
 				 {
-					//System.out.println("In process looking for ID -->" + id); 
 					 n = t.findNode(t.getRoot(),id);
 					// System.out.println("found the node " + n.getPerson().getPerson_id()); 
 					 n.addChild(pNode);	
@@ -149,7 +147,6 @@ public class Process{
 			 }
 
 		 }
-		 //trees = updateScoreList(person.getDiagnosed_ts(),trees);
 
 		 return trees;
 
