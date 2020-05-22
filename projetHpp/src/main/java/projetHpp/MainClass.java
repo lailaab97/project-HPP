@@ -46,7 +46,6 @@ public class MainClass {
 			  if (fileName.matches("Italy.csv")) {
 						try {
 								parser.fetchCsvFileData( myDirectory, fileName, SlashOrTwoBackSlash );
-
 							
 							
 						} catch (FileNotFoundException e) {
