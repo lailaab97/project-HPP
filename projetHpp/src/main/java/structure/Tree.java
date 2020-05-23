@@ -3,16 +3,29 @@ package structure;
 import java.util.List;
 
 
-
+/**
+ * The Tree structure 
+ * 
+ * @author Team
+ * 
+ */
 public class Tree {
 
+	/**the root of the tree
+	 * */
+	 
     private Node root;
     
+    /**Constructor
+     * 
+     * @param nodePerson
+     */
     public Tree(Node nodePerson)
     {
         this.root = nodePerson;
     }
-    
+
+
     public Node getRoot() {
   		return this.root;
   	}
@@ -21,49 +34,37 @@ public class Tree {
   		this.root = root;
   	}
 
-    public void traverseTree(Node rootNode)//depth first
-    {
-    	if(rootNode!= null)
-    	{
-        System.out.println(rootNode.getPerson().getPerson_id());        
-        	if(!rootNode.isLeaf() & rootNode != null)
-             {System.out.println("|");
-        		for(Node ch : rootNode.getChildren())
-            		{
-            	 		traverseTree(ch);
-            		}
-        }
-    	}
-    }
-    
-    
-  
-
-    
-    
+  	/**
+  	 * This method finds a node in a tree
+  	 * @param node : the node we are trying to find
+  	 * @param id : the id we are matching the node to 
+  	 * @return Node : the node if we find it and null if not
+  	 * */
     public Node findNode(Node node,int id ) {
-        //System.out.println("LOOKING FOR THIS ID "+node.getPerson().getPerson_id());
 
+    	//if we find the node which means that the node's person's id is the id we are looking for
         if (node.getPerson().getPerson_id() == id) {
-        //System.out.println("FOUND THIS ID "+node.getPerson().getPerson_id());
+        	//we return the node
             return node;
             
-        } else {
-        	
+        }
+        //if not 
+        else {
+        	//if the node is not a leaf
         	if(!node.isLeaf())
         	{	
+        		//we browse the node's children
             for (Node child: node.getChildren()) {
                 Node result = findNode(child,id);
                 if (result != null) {
-               //System.out.println("FOUND THIS ID"+result.getPerson().getPerson_id());
+                	//we return the node once it's found
                     return result;
                 }
             }
         }
         	
         }
-    	//System.out.println("DIDNT FIND THIS ID "+id);
-
+        //if we can't find it we return null
         return null;
     }
     

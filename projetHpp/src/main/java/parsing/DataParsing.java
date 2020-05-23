@@ -42,6 +42,7 @@ public class DataParsing {
 	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
 	
 	// Writer to write in the csv output file
+
 	FileWriter fw;
 	BufferedWriter bw;
  	
@@ -86,21 +87,15 @@ public class DataParsing {
 		
 		List<Tree> mainListOfResults = new ArrayList<Tree>();
 		Process processLine = new Process() ;
-
-
-		// Reader to read the csv inout file 
-        FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
-        BufferedReader br = new BufferedReader( fr );
-        
-		      
- 
 		String line = "";
 		String[] lineInfos;
         String delimiter = ", ";		           
 				           
 		try {			
-			
-			
+			// Reader to read the csv inout file 
+	        FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
+	        BufferedReader br = new BufferedReader( fr );
+	        
 			int person_id;
 			int diagnosed_ts;
 			int contaminated_by ;
@@ -133,9 +128,12 @@ public class DataParsing {
 				
 							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
-							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+							//we generate the map of Ids and scores of all the trees existing
+							mapOfIdsAndScores = processLine.generate(mainListOfResults);
+							//we get the top 3 result by country
 							result = processLine.generateResultByCountry(mapOfIdsAndScores);
-							lastContaminationDate = getLast(result).getKey().getDiagnosed_ts();
+							//we make sure we get the last contamination date
+
 							//Debug
 							//System.out.println("*********Event "+cpt);						
 							
@@ -152,16 +150,17 @@ public class DataParsing {
 							
 							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
-							mapOfIdsAndScores = processLine.generate(mainListOfResults,victim.getCountry());
+							//we generate the map of Ids and scores of all the trees existing
+							mapOfIdsAndScores = processLine.generate(mainListOfResults);
+							//we get the top 3 result by country
 							result = processLine.generateResultByCountry(mapOfIdsAndScores);
-							lastContaminationDate = getLast(result).getKey().getDiagnosed_ts();
 
 							//Debug
 							//System.out.println("********Event "+cpt);
 		
 						}
 						   
-						// Storing proccesd data fort the current line in the current country
+						// Storing processed data fort the current line in the current country
 							StoreResultData(bw, result);						
 
 						
@@ -174,11 +173,12 @@ public class DataParsing {
 			
 			            
         	} catch (FileNotFoundException e) {
-        		e.printStackTrace();
+        		//e.printStackTrace();
+        		System.out.println("File not found!");
             } catch(IOException ioe) {
                ioe.printStackTrace();
+               
             }
-		//System.out.println("FINISH");
 			   return result;
 			
 	}
@@ -193,7 +193,7 @@ public class DataParsing {
 						
 				String dataLine = null;
 				
-				// Get the the processed inormations in a suitable format
+				// Get the the processed informations in a suitable format
 				for (Map.Entry<Person, Integer> mapElement : mapResults.entrySet()) { 
 					
 		            Person key = (Person)mapElement.getKey(); 
@@ -217,6 +217,7 @@ public class DataParsing {
 		    	    
 				} catch (IOException e1) {
 					e1.printStackTrace();
+					//System.out.println(("yes"));
 				}
 
 		
@@ -263,6 +264,19 @@ public class DataParsing {
 		    return properties;
 		}
 	
+	
+	 /** 
+	  * Fetches the data file path
+	 * @param top3Spanish : top 3 results for Spain,
+	 * @param spanishContaminationDate : last date of contamination registered in Spain,
+	 * @param top3French : top 3 results for France,
+	 * @param frenchContaminationDate :last date of contamination registered in France,
+	 * @param top3Italian : top 3 results for Italy,
+	 * @param italianContaminationDate : last fate of contamination registered in Italy,
+	 * @param directory: directory of input data,
+	 * @param SlashOrTwoBackSlash : / or \\ depending on OS
+	 * @return List<String>: path, and / or \\ depending on OS
+	 */
 	public Map<Person,Integer> generateFinalResult(Map<Person,Integer> top3Spanish, int spanishContaminationDate, Map<Person,Integer> top3French, int frenchContaminationDate, Map<Person,Integer> top3Italian, int italianContaminationDate,File directory, String SlashOrTwoBackSlash ){
 		 
 		 Map<Person,Integer> globalResult= new LinkedHashMap<Person,Integer>();
@@ -454,7 +468,8 @@ public class DataParsing {
 				
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				//e1.printStackTrace();
+				System.out.println("Path not find where to store !");
 			}
 	  
 
@@ -462,7 +477,10 @@ public class DataParsing {
 		 
 	} 
 
-
+/** getLast of a LinkedHashMap
+ * @param map : the map of which we want he last entry
+ * @return <K, V> Entry<K, V> : a map entry
+ * */
 	public static <K, V> Entry<K, V> getLast(Map<K, V> map) {
 		  try {
 		    if (map instanceof LinkedHashMap) return getLastViaReflection(map);
