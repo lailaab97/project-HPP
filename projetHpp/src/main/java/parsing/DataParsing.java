@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,17 +36,22 @@ import processing.Process;
  * @author Team
  * 
  */
+
 public class DataParsing {
 	
 	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
-	
+ 	
+	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(1024);
+
+
 	// Map that contains the results of each proccessed input data line
 	Map<Person, Integer> mapOfIdsAndScores = new HashMap<Person, Integer>();
 	Map<Person,Integer> result = new HashMap<Person,Integer>();
 
     int lastContaminationDate = 0 ;
+    Thread writerThread;
 
-	
+
 	public Map<Person, Integer> getMapOfIdsAndScores() {
 		return mapOfIdsAndScores;
 	}
@@ -75,7 +82,7 @@ public class DataParsing {
 		
 		List<Tree> mainListOfResults = new ArrayList<Tree>();
 		Process processLine = new Process() ;
-        
+
 
 		// Reader to read the csv inout file 
         FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
@@ -149,25 +156,25 @@ public class DataParsing {
 							//System.out.println("********Event "+cpt);
 		
 						}
-						
-						
+						   
 						// Storing proccesd data fort the current line in the current country
-					//	synchronized (bw) {
-							StoreResultData(bw);
-						//}
+							StoreResultData(bw, result);						
+
+						
+						
 				            
 					  }
 
 			// Closing access to files  
-			br.close();
-			bw.close();
+		//	br.close();
+			//bw.close();
 			            
         	} catch (FileNotFoundException e) {
         		e.printStackTrace();
             } catch(IOException ioe) {
                ioe.printStackTrace();
             }
-				   			   
+		//System.out.println("FINISH");
 			   return result;
 			
 	}
@@ -178,7 +185,7 @@ public class DataParsing {
 	 * @param csvWriter: the buffer writer
 	 * @return void
 	 */	
-	public void StoreResultData(BufferedWriter csvWriter){
+	public void StoreResultData(BufferedWriter csvWriter, Map<Person, Integer> mapOfIdsAndScores){
 						
 				String dataLine = null;
 				
