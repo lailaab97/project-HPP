@@ -9,14 +9,9 @@ import beans.Person;
 
 public class NodeTest {
 
-	Person person1;
-	Person person2;
-	Person person3;
-	Person person4;
-	Node node1;
-	Node node2;
-	Node node3;
-	Node node4;
+
+	Person person1,person2,person3,person4;
+	Node node1,node2,node3,node4;
 	
 	@Before
 	public void setUp() {
