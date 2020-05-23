@@ -29,7 +29,7 @@ public class TreeTest {
 	    tree =new Tree(node1);
 		
 	}
-
+	
 	@Test
 	public void testFindNode() {
 		

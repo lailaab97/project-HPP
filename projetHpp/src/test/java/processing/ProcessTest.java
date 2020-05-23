@@ -14,11 +14,13 @@ import beans.Person;
 import structure.Node;
 import structure.Tree;
 
+
 public class ProcessTest {
 
-	
+
 	Person person1,person2,person3,person4,person5,person6,person7 ;
 	Node node1,node2,node3,node4,node5,node6,node7;
+
 	Process process ;
 	List<Tree> trees;
 	
@@ -31,6 +33,7 @@ public class ProcessTest {
 		person5=new Person(8, 1589080028, 7,"France",10);   //10-05
 		person6=new Person(9, 1589512028, 7,"France",10);   //15-05
 		person7=new Person(10, 1589944028,8,"France",10);   //20-05
+
 		
 	    node1 =new Node(person1);
 		node2=new Node(person2);
@@ -108,9 +111,9 @@ public class ProcessTest {
 		
 		
 	}
+	
 
-	
-	
+
 	@Test
 	public void testGenerateScore() {
 		
@@ -243,8 +246,7 @@ public class ProcessTest {
 		Assert.assertEquals(trees.get(0).getRoot().getChildren().get(0).getPerson().getScore(),10);
 		Assert.assertEquals(trees.get(0).getRoot().getChildren().get(1).getPerson().getPerson_id(),9);
 		Assert.assertEquals(trees.get(0).getRoot().getChildren().get(1).getPerson().getScore(),10);
-				
-		 
+						 
 	}
 
 	
@@ -279,5 +281,7 @@ public class ProcessTest {
 	    trees=null;
 	    
 	}
+	
 
 }
+
