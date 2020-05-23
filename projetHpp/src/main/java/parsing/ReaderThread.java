@@ -39,7 +39,7 @@ public class ReaderThread implements Runnable{
 	File myDirectory = new File(path);
 	
 	String[] containingFilesNames = myDirectory.list();
-	//
+	
 
   public ReaderThread(BlockingQueue<String> blockingQueue,String file){
     this.blockingQueue = blockingQueue;     
