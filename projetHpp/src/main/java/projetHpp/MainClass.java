@@ -19,33 +19,66 @@ import parsing.ReaderThread;
  * 
  */
 public class MainClass {
-	
+	/**
+	 * parser : instantiation of DataParsing
+	 * */
 	static DataParsing parser = new DataParsing();
 	
 	// Get properties file informations
+	/**
+	 * properties : mainPath retrieved from path.properties
+	 * */
 	static List<String> properties = parser.getMainPath("properties/path.properties");
+	/**
+	 * path : the path of the files
+	 * */
 	static String	path = properties.get(0);
+	/**
+	 * SlashOrTwoBackSlash : depending on the OS
+	 * */
 	static String SlashOrTwoBackSlash = properties.get(1);
 	
-	
+	/**
+	 * myDirectory : the directory where there the csv files
+	 * */
 	static File myDirectory = new File(path);
+	/**
+	 * containingFilesNames : the names of the files in the directory
+	 * */
 	static String[] containingFilesNames = myDirectory.list();
-	//The result map to store the top 3 global
+	/**
+	 * result : The result map to store the top 3 global
+	 * */
 	static Map<Person,Integer> result;
-	// Map for the top 3 in France
+	/**
+	 * resultFrance : Map of the top 3 in France
+	 * */
 	static Map<Person,Integer> resultFrance = new LinkedHashMap<Person,Integer>();
-	// Map for the top 3 in Spain
+	/**
+	 * resultSpain : Map of the top 3 in Spain
+	 * */
 	static Map<Person,Integer> resultSpain = new LinkedHashMap<Person,Integer>();
-	// Map for the top 3 in Italy
+	/**
+	 * resultItaly : Map of the top 3 in Italy
+	 * */
 	static Map<Person,Integer> resultItaly = new LinkedHashMap<Person,Integer>();
 	
 	//Last date of contamination of each country
+	/**
+	 * lasContaminationDateFrance : Last date of contamination in France
+	 * */
 	static int lasContaminationDateFrance = 0 ;
+	/**
+	 * lasContaminationDateSpain : Last date of contamination in Spain
+	 * */
 	static int lasContaminationDateSpain = 0 ;
+	/**
+	 * lasContaminationDateItaly : Last date of contamination in Italy
+	 * */
 	static int lasContaminationDateItaly = 0 ;
 	
 	/**
-	 * Executes process using Threads
+	 * This method executes process using Threads
 	 * **/
 	public static void executeThreads() throws InterruptedException {
 		/*TRY THREAD*/
@@ -83,17 +116,20 @@ public class MainClass {
  			//generating the global top 3	
  				result = parser.generateFinalResult(resultSpain, lasContaminationDateSpain, resultFrance, lasContaminationDateFrance, resultItaly, lasContaminationDateItaly, myDirectory, SlashOrTwoBackSlash );
  				
+ 				// DEBUG				
 // 				System.out.println("Top 3 global");
 // 				for (Person key : result.keySet()) {
 // 					System.out.println(key.getCountry()+", "+key.getPerson_id()+", "+result.get(key));
 // 				}
+ 				
  			    long end = System.nanoTime();// we stop counting the time of execution
  				long elapsedTime= end-start; // time elapsed 
-				System.out.println("Elapsed time using Thread is: "+Math.abs(elapsedTime));
+				//ELAPSED TIME
+ 				System.out.println("Elapsed time using Thread is: "+Math.abs(elapsedTime));
 		
 	}
 	/**
-	 * Executes process without using Threads
+	 * This method executes process without using Threads
 	 * **/
 	public static void executeWithoutThreads() {
 		
@@ -165,6 +201,8 @@ public class MainClass {
 		}
 		
 	}
+	
+	
 	public static void main(String[] args) throws InterruptedException { 
 		
 		

@@ -42,19 +42,25 @@ public class DataParsing {
 	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
 	
 	// Writer to write in the csv output file
-
+	/**
+	 * fw : to write in the output file
+	 * */
 	FileWriter fw;
+	/**
+	 * bw : the buffer writer for the output file
+	 */
 	BufferedWriter bw;
- 	
-	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(1024);
 
-
-	// Map that contains the results of each proccessed input data line
+	
+	/**
+	 * mapOdIdsAndScores :  map that contains the results of each proccessed input data line
+	 * */
 	Map<Person, Integer> mapOfIdsAndScores = new HashMap<Person, Integer>();
+	
+	/**
+	 * result : map that contains the top 3 of the current country
+	 * */
 	Map<Person,Integer> result = new HashMap<Person,Integer>();
-
-    int lastContaminationDate = 0 ;
-    Thread writerThread;
 
 
 	public Map<Person, Integer> getMapOfIdsAndScores() {
@@ -67,14 +73,7 @@ public class DataParsing {
 	}
 
 
-	public int getLastContaminationDate() {
-		return lastContaminationDate;
-	}
-
-
-	public void setLastContaminationDate(int lastContaminationDate) {
-		this.lastContaminationDate = lastContaminationDate;
-	}
+	
 
 
 	/**
@@ -85,23 +84,29 @@ public class DataParsing {
 	
 	public Map<Person, Integer> fetchCsvFileData(File directory, String file, String SlashOrTwoBackSlash) throws FileNotFoundException {
 		
+		//the list of all the trees available
 		List<Tree> mainListOfResults = new ArrayList<Tree>();
+		//we instantiate the class Process
 		Process processLine = new Process() ;
+		//For the output :
 		String line = "";
 		String[] lineInfos;
         String delimiter = ", ";		           
 				           
 		try {			
 			// Reader to read the csv inout file 
+			//The filereader and the buffer reader for reading the csv of the current country
 	        FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
 	        BufferedReader br = new BufferedReader( fr );
-	        
+	        //The person's info
 			int person_id;
 			int diagnosed_ts;
 			int contaminated_by ;
 			String country;
+			
 			int score;
-			int cpt = 0;
+			//for the debug
+			//int cpt = 0;
 			
 			    	// Writer to write in the csv output file
 					fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
@@ -110,44 +115,26 @@ public class DataParsing {
 
 					// Access to input file lines and process them line by line
 					while(( line = br.readLine()) != null ) {
-						
-						cpt++;
+						//for the debug
+						//cpt++;
 						lineInfos = line.split(delimiter);
-		
-						// if the contaminer is unknown
-						if(lineInfos[5].contentEquals("unknown")){
-							
-							person_id = Integer.parseInt(lineInfos[0]);
-							diagnosed_ts = Math.round(Float.parseFloat(lineInfos[4]));
-							contaminated_by = -1;
-							country = file.replace(".csv", "");
-							score = 10;
-							
-							// Creation of a new Person whose contaminer is unknow
-							Person victim = new Person(person_id,diagnosed_ts,contaminated_by ,country,score);
-				
-							// Processing data
-							mainListOfResults = processLine.process(victim, mainListOfResults);
-							//we generate the map of Ids and scores of all the trees existing
-							mapOfIdsAndScores = processLine.generate(mainListOfResults);
-							//we get the top 3 result by country
-							result = processLine.generateResultByCountry(mapOfIdsAndScores);
-							//we make sure we get the last contamination date
+						person_id = Integer.parseInt(lineInfos[0]);
+						diagnosed_ts = Math.round(Float.parseFloat(lineInfos[4]));
+						country = file.replace(".csv", "");
+						score = 10; // every new person has a score of 10
 
-							//Debug
-							//System.out.println("*********Event "+cpt);						
+						// if it is unknown
+						if(lineInfos[5].contentEquals("unknown")){
+							//parsing the person's info
+							contaminated_by = -1; // if it is contaminated by "unknown"			
 							
-						}else {
-							
-							person_id = Integer.parseInt(lineInfos[0]);
-							diagnosed_ts = Math.round(Float.parseFloat(lineInfos[4]));
+						}
+						//if it is known
+						else {
 							contaminated_by = Integer.parseInt(lineInfos[5]);
-							country = file.replace(".csv", "");
-							score = 10;
-							
+							}
 							// Creation of a new Person
 							Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
-							
 							// Processing data
 							mainListOfResults = processLine.process(victim, mainListOfResults);
 							//we generate the map of Ids and scores of all the trees existing
@@ -157,21 +144,14 @@ public class DataParsing {
 
 							//Debug
 							//System.out.println("********Event "+cpt);
-		
-						}
-						   
-						// Storing processed data fort the current line in the current country
+							
+							// Storing processed data fort the current line in the current country
 							StoreResultData(bw, result);						
 
-						
-						
-				            
-					  }
-
-			// Closing access to input file  
-				br.close();
-			
-			            
+					}
+					// Closing access to input file  
+							br.close();
+           
         	} catch (FileNotFoundException e) {
         		//e.printStackTrace();
         		System.out.println("File not found!");
