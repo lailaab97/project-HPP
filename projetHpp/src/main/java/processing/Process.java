@@ -159,53 +159,85 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 		 
 		 Map<Person,Integer> result=new LinkedHashMap<Person,Integer>();
 		 
+		 //convert mapOfIdsAndScores to two lists of scores and ids
+		 //each index in the id list correspond to its value in the scores list at the same index
 		 List<Integer> scores=new ArrayList<>();
 		 scores.addAll(mapOfIdsAndScores.values());
 		 
 		 List<Person> id=new ArrayList<>();
 		 id.addAll(mapOfIdsAndScores.keySet());
 		 
+		//initialize counter of elements in result 
 		 int cmpt=0;
+		 
+		 // search for max in scores
 		 int max=Collections.max(scores);
 		 
 		 while(cmpt<3 && scores.size()!=0 && max!=0) {
 			 
+			 // if the maximum score exists more than once
 			 if (Collections.frequency(scores, max)!=1) {
 				 
-				 List<Integer> restOfScores=new ArrayList<>();
+				 // create variables to add ids that have the same score
 				 List<Person> restOfIds=new ArrayList<>();
+				 
+				 //dates to store dates of contamination of root
 				 List<Integer> dates=new ArrayList<>();
 				 
+				 // look for first index of max
 				 int index=scores.indexOf(max);
+				 
+				 //while max exists in scores
 				 while(index!=-1) {
-					 restOfScores.add(scores.get(index));
+					 //add id and date to lists
 					 restOfIds.add(id.get(index));
 					 dates.add(id.get(index).getDiagnosed_ts());
+					 
+					 //remove score and id from original lists
 					 scores.remove(index);
 					 id.remove(index);
+					 
+					 //update index of max
 					 index=scores.indexOf(max);
 				 }
 				 
-				 while(cmpt<3 && restOfScores.size()!=0) {
+				 // while counter<3 : less than three elements in result
+				 // and while there's still elements in the lists
+				 while(cmpt<3 && restOfIds.size()!=0) {
+					 
+					 //get index of minimum of dates
 					 int min=dates.indexOf(Collections.min(dates));
-					 result.put(restOfIds.get(min),restOfScores.get(min));
-					 restOfScores.remove(min);
+					 
+					 //add score and id to result
+					 result.put(restOfIds.get(min),max);
+					 
+					 //remove id and date from lists
 					 restOfIds.remove(min);
 					 dates.remove(min);
+					 
+					 //update counter
 					 cmpt++;
 					 
 				 }
  			 }
+			 // if max score only occures once
 			 else {
 				 
+				 //get index of max
 				 int index=scores.indexOf(max);
+				 
+				 //add id and score to result
 				 result.put(id.get(index),max);
+				 
+				 //update counter after adding to result
 				 cmpt++;
+				 
+				 //remove element from both lists to look for the new max
 				 scores.remove(index);
 				 id.remove(index);
 				 
 			 }
-			 
+			 //update max value while if there's still elements in the score lists
 			 if (scores.size()!=0) {
 				 max=Collections.max(scores);
 			 }
@@ -218,6 +250,11 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 		 
 		 Map<Person,Integer> result= new LinkedHashMap<Person,Integer>();
 		 
+		 // in everything that follows we always have :
+		 // index 0 : france , index 1 : spain, index 2 : italy results
+		 
+		 //create list of lists of scores and ids
+		// index 0 : french results , index 1 : spanish results, index 2 : italian results
 		 
 		 List<ArrayList<Integer>> allScores=new ArrayList<ArrayList<Integer>>();
 		 allScores.add(new ArrayList<>(top3French.values()));
@@ -229,14 +266,19 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 		 id.add(new ArrayList<>(top3Spanish.keySet()));
 		 id.add(new ArrayList<>(top3Italian.keySet()));
 		 
+		 //create list of indexes to browse lists of score
 		 List<Integer> indexes=new ArrayList<>();
 		 indexes.add(0);
 		 indexes.add(0);
 		 indexes.add(0);
 		 
 		 int index;
+		 
+		 //initialize counter of elements in result
 		 int cmpt=0;
 		 
+		 //create a list of scores where we add the first result of each country
+		 // if list of scores is empty add 0
 		 List<Integer> scores=new ArrayList<>();
 		 if (allScores.get(0).size()!=0) {
 			 scores.add(allScores.get(0).get(0));
@@ -253,113 +295,80 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 			 scores.add(0);
 		 }
 		 
+		 //add contamination dates to a list in the right order of countries
 		 List<Integer> contaminationDates=new ArrayList<>();
 		 contaminationDates.add(frenchContaminationDate);
 		 contaminationDates.add(spanishContaminationDate);
 		 contaminationDates.add(italianContaminationDate);
 		 
+		 //look for max score
 		 Integer max=Collections.max(scores);
 		 
+		 //while counter<3 (less than three elements in result)
+		 //and all scores>0
 		 while(cmpt<3 && max!=0) {
 			 
+			 // if max value occurs more than once
 			 if (Collections.frequency(scores, max)>1) {
-				 if(Collections.frequency(scores, max)==3) {
-					 int indMax=contaminationDates.indexOf(Collections.max(contaminationDates));
-					 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
-					 int indMed=3-(indMax+indMin);
+				 
+				 //get the index of min contamination date
+				 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
+				 
+				 //add the score 
+				 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
+				 
+				 //update index in list of scores of the country
+				 indexes.set(indMin,indexes.get(indMin)+1);
+				 
+				 //update counter
+				 cmpt++;
+				 
+				 // if there's still elements in the list of scores
+				 if (indexes.get(indMin)<allScores.get(indMin).size()) {
 					 
-				
-					 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
-					 indexes.set(indMin,indexes.get(indMin)+1);
-					 cmpt++;
-					 
-					 if (cmpt<3) {
-						 result.put((id.get(indMed)).get(indexes.get(indMed)),(allScores.get(indMed)).get(indexes.get(indMed)));
-						 indexes.set(indMed,indexes.get(indMed)+1);
-						 cmpt++;
-					 }
-					 if (cmpt<3) {
-						 result.put((id.get(indMax)).get(indexes.get(indMax)),(allScores.get(indMax)).get(indexes.get(indMax)));
-						 indexes.set(indMax,indexes.get(indMax)+1);
-						 cmpt++;
-					 }
+					 //add next best score to list of scores
+					 scores.set(indMin,(allScores.get(indMin)).get(indexes.get(indMin)));
 				 }
 				 else {
 					 
-					 int ind1=scores.indexOf(max);
-					 int ind2=scores.lastIndexOf(max);
-					 if(contaminationDates.get(ind1)<contaminationDates.get(ind2)){
-						 
-						 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
-						 indexes.set(ind1,indexes.get(ind1)+1);
-						 if (indexes.get(ind1)<allScores.get(ind1).size()) {
-							 scores.set(ind1,(allScores.get(ind1)).get(indexes.get(ind1)));
-						 }
-						 else {
-							 scores.set(ind1,0);
-						 }
-						 cmpt++; 
-						 
-						 
-						 if(cmpt<3){
-							 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
-							 indexes.set(ind2,indexes.get(ind2)+1);
-							 if (indexes.get(ind2)<allScores.get(ind2).size()) {
-								 scores.set(ind2,(allScores.get(ind2)).get(indexes.get(ind2)));
-							 }
-							 else {
-								 scores.set(ind2,0);
-							 }
-							 
-							 cmpt++;
-						 }
-					 }
-					 else{
-						 
-						 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
-						 indexes.set(ind2,indexes.get(ind2)+1);
-						 if (indexes.get(ind2)<allScores.get(ind2).size()) {
-							 scores.set(ind2,(allScores.get(ind2)).get(indexes.get(ind2)));
-						 }
-						 else {
-							 scores.set(ind2,0);
-						 }
-						 
-						 cmpt++;
-						 
-						 
-						 if(cmpt<3){
-							 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
-							 indexes.set(ind1,indexes.get(ind1)+1);
-							 if (indexes.get(ind1)<allScores.get(ind1).size()) {
-								 scores.set(ind1,(allScores.get(ind1)).get(indexes.get(ind1)));
-							 }
-							 else {
-								 scores.set(ind1,0);
-							 }
-							 cmpt++; 
-						 }
-						 
-					 }
-					 
+					 //else put 0 at the the index of the country
+					 //no more scores
+					 scores.set(indMin,0);
 				 }
+				 
 			 }
 			 
+			 // if max value occurs once
 			 else {
 				 
+				 //get index of max value
 				 index=scores.indexOf(max);
-				 result.put((id.get(index)).get(indexes.get(index)),(allScores.get(index)).get(indexes.get(index)));
+				 
+				 //add result 
+				 result.put((id.get(index)).get(indexes.get(index)),max);
+				 
+				 //update index in indexes list
 				 indexes.set(index,indexes.get(index)+1);
+				 
+				// if there's still elements in the list of scores
 				 if (indexes.get(index)<allScores.get(index).size()) {
+					 
+					 //add the next best element to list of scores
 					 scores.set(index,(allScores.get(index)).get(indexes.get(index)));
 				 }
 				 else {
+					 
+					//else put 0 at the the index of the country
+					 //no more scores
 					 scores.set(index,0);
 				 }
+				 
+				 //update counter 
 				 cmpt++;
 				 
 			 }
 			 
+			 //update new max value
 			 max=Collections.max(scores);
 		 }
 				 

@@ -89,7 +89,7 @@ public class MainClass {
 		Person pers5=new Person(3,"a", "b", date,7, -1, "bla", "france", 10);
 		spain.put(pers3,10);
 		spain.put(pers4,20);
-		spain.put(pers5,30);
+		spain.put(pers5,20);
 		resultSpain=proc.generateResultByCountry(spain);
 		
 		Map<Person,Integer> italy=new HashMap<Person,Integer>();
