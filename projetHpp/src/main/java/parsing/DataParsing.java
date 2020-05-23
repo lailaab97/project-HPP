@@ -446,6 +446,7 @@ public class DataParsing {
 				fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
 			    bw = new BufferedWriter(fw); 
 			    
+			    // write result
 				StoreResultData(bw, globalResult);
 				
 				bw.close();
