@@ -38,16 +38,7 @@ public class TreeTest {
 		
 	}
 
-	
-	@Test
-	public void testDeleteNode() {
-		ArrayList<Tree> trees=new ArrayList<Tree>();
-		trees.add(tree);
-		tree.deleteNode(node1, trees); // needs date attribute
-		Assert.assertEquals(trees.size(),2);
-		Assert.assertEquals(trees.get(0).getRoot(),node2);
-		Assert.assertEquals(trees.get(1).getRoot(),node3);
-	}
+
 
 	@Test
 	public void testFindNode() {

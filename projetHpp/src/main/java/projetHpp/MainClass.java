@@ -2,7 +2,6 @@ package projetHpp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,12 +25,13 @@ public class MainClass {
 		String	path = properties.get(0);
 		String SlashOrTwoBackSlash = properties.get(1);
 		
+		
 		File myDirectory = new File(path);
+		String[] containingFilesNames = myDirectory.list();
+
 		Map<Person,Integer> resultFrance = new HashMap<Person,Integer>();
 		Map<Person,Integer> resultSpain = new HashMap<Person,Integer>();
 		Map<Person,Integer> resultItaly = new HashMap<Person,Integer>();
-
-		String[] containingFilesNames = myDirectory.list();
 		
 		/**
 		 * NOT USING THREADS
@@ -70,7 +70,7 @@ public class MainClass {
  				int lasContaminationDateSpain = 0 ;
  				int lasContaminationDateItaly = 0 ;
  				
- 				Map<Person,Integer> result = parser.generateFinalResult(resultSpain, lasContaminationDateSpain, resultFrance, lasContaminationDateFrance, resultItaly, lasContaminationDateItaly);
+ 				Map<Person,Integer> result = parser.generateFinalResult(resultSpain, lasContaminationDateSpain, resultFrance, lasContaminationDateFrance, resultItaly, lasContaminationDateItaly, myDirectory, SlashOrTwoBackSlash );
  				
 // 				System.out.println("Top 3 global");
 // 				for (Person key : result.keySet()) {
@@ -87,15 +87,15 @@ public class MainClass {
 				
 // */
 		
-/*		long start1 = System.nanoTime();//we start counting the time
+		/*long start1 = System.nanoTime();//we start counting the time
 
 		Map<Person,Integer> france = new HashMap<Person,Integer>();
 		Map<Person,Integer> spain = new HashMap<Person,Integer>();
 		Map<Person,Integer> italy = new HashMap<Person,Integer>();
 		
-//		int lasContaminationDateFrance = 0 ;
-//		int lasContaminationDateSpain = 0 ;
-//		int lasContaminationDateItaly = 0 ;
+		int lasContaminationDateFrance = 0 ;
+		int lasContaminationDateSpain = 0 ;
+		int lasContaminationDateItaly = 0 ;
 
 		
 		for (String fileName : containingFilesNames) {
@@ -153,8 +153,8 @@ public class MainClass {
 		}
 
 		
-		//Map<Person,Integer> result = new LinkedHashMap<Person,Integer>();
-		result = parser.generateFinalResult(spain, lasContaminationDateSpain, france, lasContaminationDateFrance, italy, lasContaminationDateItaly);
+		Map<Person,Integer> result = new LinkedHashMap<Person,Integer>();
+		result = parser.generateFinalResult(spain, lasContaminationDateSpain, france, lasContaminationDateFrance, italy, lasContaminationDateItaly,myDirectory, SlashOrTwoBackSlash);
 		long end1 = System.nanoTime();// we stop counting the time
 		long elapsedTime1 = end1-start1; // time elapsed
 		System.out.println("Elapsed time not using thread is: "+Math.abs(elapsedTime1));
