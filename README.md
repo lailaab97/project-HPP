@@ -74,13 +74,14 @@ Process
 Step 1 result: Italy 1,10
 Step 2 result: Italy 6,10
 Step 3 result: Italy 10,10
-Step 4 result: Italy 10,4 ; Italy 14,10
-Step 5 result: Italy 15,10
-Step 6 result: Italy 17, 10 ; Italy 18, 10
+Step 4 result: Italy 10,4 ; Italy 12,10
+Step 5 result: Italy 15,10; Italy 12,4
+Step 6 result: Italy 17, 10 ; Italy 15, 4 
+Step 7 result: Italy 15,4 ; Italy 17,10; Italy 18,10 
 ```
 Final Output
 ```
-Italy 17, 10 ; Italy 18, 10
+Italy 15,4 ; Italy 17,10; Italy 18,10 
 ```
 
 **Final result of the 3 examples above**
