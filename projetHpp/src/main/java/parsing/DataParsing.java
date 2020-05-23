@@ -213,7 +213,7 @@ public class DataParsing {
 		    	    csvWriter.flush();
 		    	    
 					//Debug
-		    	  //  System.out.println(dataLine);
+		    	    System.out.println(dataLine);
 		    	    
 				} catch (IOException e1) {
 					e1.printStackTrace();
