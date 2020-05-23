@@ -37,33 +37,7 @@ public class Tree {
     }
     
     
-    public List<Tree> deleteNode(int date,Node rootNode, List<Tree> trees)
-    {
-    	if(!rootNode.isLeaf())
-    	{
-    			for(Node n : rootNode.getChildren())
-    			{		    					
-    				// Create new nodes only if they are still up to date
-    				if(date - n.getPerson().getDiagnosed_ts()<= 1209600){
-						Tree tree = new Tree(n);
-		    			trees.add(tree);
-		    			//System.out.println("A new Tree of root "+n.getPerson().getPerson_id()+" is created++");
-
-    				}
-
-    			}
-    	}
-    	if(this.getRoot().getPerson().getPerson_id() == rootNode.getPerson().getPerson_id()) {
-    		trees.remove(this);
-			//System.out.println("The tree of "+this.getRoot().getPerson().getPerson_id()+" is removed");
-    	}
-			        	
-    	
-    	return trees;
-    	}
-
-
-    
+  
 
     
     
