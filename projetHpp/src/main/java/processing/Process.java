@@ -426,8 +426,6 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 		 return result;
 		 
 	} 
-
-	 
 	 
 }
 

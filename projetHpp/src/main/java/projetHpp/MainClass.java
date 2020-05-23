@@ -79,7 +79,7 @@ public class MainClass {
 		Person pers1=new Person(4, "a", "b", date,1, -1, "bla", "france", 10);
 		Person pers2=new Person(5, "a", "b", date,3, -1, "bla", "france", 10);
 		france.put(pers1,20);
-		france.put(pers2,10);
+		france.put(pers2,20);
 		resultFrance=proc.generateResultByCountry(france);
 		
 		Map<Person,Integer> spain=new HashMap<Person,Integer>();
@@ -89,7 +89,7 @@ public class MainClass {
 		Person pers5=new Person(3,"a", "b", date,7, -1, "bla", "france", 10);
 		spain.put(pers3,20);
 		spain.put(pers4,20);
-		spain.put(pers5,10);
+		spain.put(pers5,20);
 		resultSpain=proc.generateResultByCountry(spain);
 		
 		Map<Person,Integer> italy=new HashMap<Person,Integer>();
@@ -97,10 +97,11 @@ public class MainClass {
 		Person pers9=new Person(6, "a", "b", date,1, -1, "bla", "france", 10);
 		Person pers7=new Person(7, "a", "b", date,2, -1, "bla", "france", 10);
 		italy.put(pers9,20);
-		italy.put(pers7,7);
+		italy.put(pers7,20);
 		resultItaly=proc.generateResultByCountry(italy);
 		Map<Person,Integer> result=new LinkedHashMap<Person,Integer>();
-		result=proc.generateFinalResult(resultSpain, 10, resultFrance, 11, resultItaly, 12);
+		Map<Person,Integer> result1=new LinkedHashMap<Person,Integer>();
+		result=proc.generateFinalResult(result1, 11, result1, 10, resultFrance, 12);
 		
 		System.out.println("resultFrance");
 		for (Person key : resultFrance.keySet()) {
