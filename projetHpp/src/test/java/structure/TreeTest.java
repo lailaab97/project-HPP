@@ -1,7 +1,5 @@
 package structure;
 
-
-import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,14 +9,8 @@ import beans.Person;
 public class TreeTest {
 
 	
-	Person person1;
-	Person person2;
-	Person person3;
-	Person person4;
-	Node node1;
-	Node node2;
-	Node node3;
-	Node node4;
+	Person person1,person2,person3,person4;
+	Node node1,node2,node3,node4;
 	Tree tree;
 	
 	@Before
@@ -36,17 +28,6 @@ public class TreeTest {
 		node2.addChild(node4);
 	    tree =new Tree(node1);
 		
-	}
-
-	
-	@Test
-	public void testDeleteNode() {
-		ArrayList<Tree> trees=new ArrayList<Tree>();
-		trees.add(tree);
-		tree.deleteNode(node1, trees); // needs date attribute
-		Assert.assertEquals(trees.size(),2);
-		Assert.assertEquals(trees.get(0).getRoot(),node2);
-		Assert.assertEquals(trees.get(1).getRoot(),node3);
 	}
 
 	@Test
