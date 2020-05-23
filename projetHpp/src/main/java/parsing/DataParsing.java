@@ -40,6 +40,10 @@ import processing.Process;
 public class DataParsing {
 	
 	private static final Logger logger = Logger.getLogger(DataParsing.class.getName()); //Logger pour afficher les erreurs
+	
+	// Writer to write in the csv output file
+	FileWriter fw;
+	BufferedWriter bw;
  	
 	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(1024);
 
@@ -105,8 +109,8 @@ public class DataParsing {
 			int cpt = 0;
 			
 			    	// Writer to write in the csv output file
-					FileWriter fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
-			        BufferedWriter bw = new BufferedWriter(fw); 
+					fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
+			        bw = new BufferedWriter(fw); 
 
 
 					// Access to input file lines and process them line by line
@@ -133,7 +137,7 @@ public class DataParsing {
 							result = processLine.generateResultByCountry(mapOfIdsAndScores);
 							lastContaminationDate = getLast(result).getKey().getDiagnosed_ts();
 							//Debug
-						//	System.out.println("*********Event "+cpt);						
+							//System.out.println("*********Event "+cpt);						
 							
 						}else {
 							
@@ -165,9 +169,9 @@ public class DataParsing {
 				            
 					  }
 
-			// Closing access to files  
-		//	br.close();
-			//bw.close();
+			// Closing access to input file  
+				br.close();
+			
 			            
         	} catch (FileNotFoundException e) {
         		e.printStackTrace();
@@ -185,12 +189,12 @@ public class DataParsing {
 	 * @param csvWriter: the buffer writer
 	 * @return void
 	 */	
-	public void StoreResultData(BufferedWriter csvWriter, Map<Person, Integer> mapOfIdsAndScores){
+	public void StoreResultData(BufferedWriter csvWriter, Map<Person, Integer> mapResults){
 						
 				String dataLine = null;
 				
 				// Get the the processed inormations in a suitable format
-				for (Map.Entry<Person, Integer> mapElement : mapOfIdsAndScores.entrySet()) { 
+				for (Map.Entry<Person, Integer> mapElement : mapResults.entrySet()) { 
 					
 		            Person key = (Person)mapElement.getKey(); 
 		            int value = ((int)mapElement.getValue());
@@ -259,9 +263,9 @@ public class DataParsing {
 		    return properties;
 		}
 	
-	public Map<Person,Integer> generateFinalResult(Map<Person,Integer> top3Spanish, int spanishContaminationDate, Map<Person,Integer> top3French, int frenchContaminationDate, Map<Person,Integer> top3Italian, int italianContaminationDate ){
+	public Map<Person,Integer> generateFinalResult(Map<Person,Integer> top3Spanish, int spanishContaminationDate, Map<Person,Integer> top3French, int frenchContaminationDate, Map<Person,Integer> top3Italian, int italianContaminationDate,File directory, String SlashOrTwoBackSlash ){
 		 
-		 Map<Person,Integer> result= new LinkedHashMap<Person,Integer>();
+		 Map<Person,Integer> globalResult= new LinkedHashMap<Person,Integer>();
 		 
 		 // in everything that follows we always have :
 		 // index 0 : france , index 1 : spain, index 2 : italy results
@@ -330,7 +334,7 @@ public class DataParsing {
 					 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
 					 
 					 //add the score 
-					 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
+					 globalResult.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
 
 					 //update index in list of scores of the country
 					 indexes.set(indMin,indexes.get(indMin)+1);
@@ -363,7 +367,7 @@ public class DataParsing {
 					 if(contaminationDates.get(ind1)<contaminationDates.get(ind2)){
 						 
 						 //add ind1 to result 
-						 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
+						 globalResult.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
 						 
 						 //update index
 						 indexes.set(ind1,indexes.get(ind1)+1);
@@ -384,7 +388,7 @@ public class DataParsing {
 					 else{
 						 
 						 //add ind2 to result
-						 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
+						 globalResult.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
 						 
 						 //update index 
 						 indexes.set(ind2,indexes.get(ind2)+1);
@@ -409,7 +413,7 @@ public class DataParsing {
 				 index=scores.indexOf(max);
 				 
 				 //add result 
-				 result.put((id.get(index)).get(indexes.get(index)),max);
+				 globalResult.put((id.get(index)).get(indexes.get(index)),max);
 				 
 				 //update index in indexes list
 				 indexes.set(index,indexes.get(index)+1);
@@ -436,7 +440,24 @@ public class DataParsing {
 			 max=Collections.max(scores);
 		 }
 				 
-		 return result;
+		 
+		// Store global result in the last line of the ouput file
+		try {
+				fw = new FileWriter( directory+SlashOrTwoBackSlash+"output.csv", true );
+			    bw = new BufferedWriter(fw); 
+			    
+				StoreResultData(bw, globalResult);
+				
+				bw.close();
+
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	  
+
+		 return globalResult;
 		 
 	} 
 
