@@ -130,9 +130,10 @@ public class DataParsing {
 							
 						}
 						//if it is known
-						else {
+						else 
+						{
 							contaminated_by = Integer.parseInt(lineInfos[5]);
-							}
+						}
 							// Creation of a new Person
 							Person victim = new Person(person_id,diagnosed_ts,contaminated_by,country,score);
 							// Processing data
@@ -205,7 +206,7 @@ public class DataParsing {
 
 		
 	 /** 
-	  * Fetches the data file path
+	  * Fetches the input data file directory path from project resources
 	 * @param Location : path to path.properties file in resources
 	 * @return List<String>: path, and / or \\ depending on OS
 	 */
