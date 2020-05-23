@@ -12,64 +12,64 @@ import java.util.concurrent.BlockingQueue;
 
 import beans.Person;
 
+/**
+ * ReaderThread implements Runnable and treat the file in question
+ * 
+ * @author Team
+ * 
+ */
 public class ReaderThread implements Runnable{
 
   protected BlockingQueue<String> blockingQueue = null;
   
-  //
   
-  DataParsing parser = new DataParsing();
+  	// we instanciate parser to process the files
+  	DataParsing parser = new DataParsing();
 	
 	// Get properties file informations
 	List<String> properties = parser.getMainPath("properties/path.properties");
 	String	path = properties.get(0);
 	String SlashOrTwoBackSlash = properties.get(1);
+	//last contamination date registered in the whole file
 	int lasContaminationDate = 0;
+	
+	//the name of the file (here the country)
+	String file;
+	//the map of the results of this file
+	Map<Person,Integer> result = new HashMap<Person,Integer>();	
+	File myDirectory = new File(path);
+	String[] containingFilesNames = myDirectory.list();
 	
 	public int getLastContaminationDate() {
 		return lasContaminationDate;
-	}
-	String file;
-	
-	Map<Person,Integer> result = new HashMap<Person,Integer>();
 
+	}
 	public Map<Person, Integer> getResult() {
 		return result;
 	}
-
-
-
-	File myDirectory = new File(path);
-	
-	String[] containingFilesNames = myDirectory.list();
-	
-
-  public ReaderThread(BlockingQueue<String> blockingQueue,String file){
-    this.blockingQueue = blockingQueue;     
-    this.file = file;
-  }
+	//Constructor 
+	  public ReaderThread(BlockingQueue<String> blockingQueue,String file){
+	    this.blockingQueue = blockingQueue;     
+	    this.file = file;
+	  }
 
   @Override
   public void run() {
      try {
-//    	 for (String fileName : containingFilesNames) {
-// 			if (fileName.matches("(France|Italy|Spain).csv")) {
+    	 		//we stock the result of the process of the file in result
  				result = parser.fetchCsvFileData(myDirectory, file, SlashOrTwoBackSlash);
+ 				if(result != null) {
+ 					if(result.size()>1)
+ 						//we register the last date of contamination registered
+ 						//since result is a linkedHashMap and the results are stored from  old to new we need to get the new one
  				lasContaminationDate = parser.getLast(result).getKey().getDiagnosed_ts();
- 				
- 			//	System.out.println("Top 3 ");
-// 				for (Person key : result.keySet()) {
-// 					System.out.println(key.getCountry()+", "+key.getPerson_id()+", "+result.get(key));
-// 				}
+ 				}
  	            blockingQueue.put("EOF");  //When end of file has been reached
-
-// 			}
-//    	 }
 
 
         } catch (FileNotFoundException e) {
 
-            e.printStackTrace();
+            System.out.println("Error in ReaderThread : could not find the path");
         } catch (IOException e) {
 
             e.printStackTrace();
