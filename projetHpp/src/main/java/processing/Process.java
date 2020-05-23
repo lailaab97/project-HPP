@@ -310,37 +310,88 @@ public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfId
 			 
 			 // if max value occurs more than once
 			 if (Collections.frequency(scores, max)>1) {
-				 
-				 //get the index of min contamination date
-				 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
-				 
-				 //add the score 
-				 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
-				 
-				 //update index in list of scores of the country
-				 indexes.set(indMin,indexes.get(indMin)+1);
-				 
-				 //update counter
-				 cmpt++;
-				 
-				 // if there's still elements in the list of scores
-				 if (indexes.get(indMin)<allScores.get(indMin).size()) {
+				// if max value occurs three times
+				 if (Collections.frequency(scores, max)==3) {
 					 
-					 //add next best score to list of scores
-					 scores.set(indMin,(allScores.get(indMin)).get(indexes.get(indMin)));
-				 }
-				 else {
+					 //get the index of min contamination date
+					 int indMin=contaminationDates.indexOf(Collections.min(contaminationDates));
 					 
-					 //else put 0 at the the index of the country
-					 //no more scores
-					 scores.set(indMin,0);
+					 //add the score 
+					 result.put((id.get(indMin)).get(indexes.get(indMin)),(allScores.get(indMin)).get(indexes.get(indMin)));
+
+					 //update index in list of scores of the country
+					 indexes.set(indMin,indexes.get(indMin)+1);
+					 
+					 //update counter
+					 cmpt++;
+					 
+					 // if there's still elements in the list of scores
+					 if (indexes.get(indMin)<allScores.get(indMin).size()) {
+						 
+						 //add next best score to list of scores
+						 scores.set(indMin,(allScores.get(indMin)).get(indexes.get(indMin)));
+					 }
+					 else {
+						 
+						 //else put 0 at the the index of the country
+						 //no more scores
+						 scores.set(indMin,0);
+					 }
+					 
 				 }
+			 // if max value occurs twice
+			     else {
 				 
-			 }
-			 
+					 // find the two indexes of max 
+					 int ind1=scores.indexOf(max);
+					 int ind2=scores.lastIndexOf(max);
+					 
+					 //compare contamination dates of two countries 
+					 if(contaminationDates.get(ind1)<contaminationDates.get(ind2)){
+						 
+						 //add ind1 to result 
+						 result.put((id.get(ind1)).get(indexes.get(ind1)),(allScores.get(ind1)).get(indexes.get(ind1)));
+						 
+						 //update index
+						 indexes.set(ind1,indexes.get(ind1)+1);
+						 
+						 if (indexes.get(ind1)<allScores.get(ind1).size()) {
+							 //add next best score to list of scores
+							 scores.set(ind1,(allScores.get(ind1)).get(indexes.get(ind1)));
+						 }
+						 else {
+							 //put 0 at index of country
+							 scores.set(ind1,0);
+						 }
+						 
+						 //update counter
+						 cmpt++; 
+						 
+					 }
+					 else{
+						 
+						 //add ind2 to result
+						 result.put((id.get(ind2)).get(indexes.get(ind2)),(allScores.get(ind2)).get(indexes.get(ind2)));
+						 
+						 //update index 
+						 indexes.set(ind2,indexes.get(ind2)+1);
+						 
+						 if (indexes.get(ind2)<allScores.get(ind2).size()) {
+							 //add next best score to list of scores
+							 scores.set(ind2,(allScores.get(ind2)).get(indexes.get(ind2)));
+						 }
+						 else {
+							 //put 0 at index of country
+							 scores.set(ind2,0);
+						 }
+						 
+						 //update counter
+						 cmpt++;
+					 }
+				}
 			 // if max value occurs once
-			 else {
-				 
+			 } else {
+			 	
 				 //get index of max value
 				 index=scores.indexOf(max);
 				 
