@@ -28,10 +28,11 @@ public class MainClass {
 		
 		File myDirectory = new File(path);
 		String[] containingFilesNames = myDirectory.list();
+		Map<Person,Integer> result;
 
-		Map<Person,Integer> resultFrance = new HashMap<Person,Integer>();
-		Map<Person,Integer> resultSpain = new HashMap<Person,Integer>();
-		Map<Person,Integer> resultItaly = new HashMap<Person,Integer>();
+		Map<Person,Integer> resultFrance = new LinkedHashMap<Person,Integer>();
+		Map<Person,Integer> resultSpain = new LinkedHashMap<Person,Integer>();
+		Map<Person,Integer> resultItaly = new LinkedHashMap<Person,Integer>();
 		
 		/**
 		 * NOT USING THREADS
@@ -66,11 +67,11 @@ public class MainClass {
  			    resultSpain = readerSpain.getResult();
  			    resultItaly = readerItaly.getResult();
 			    
- 				int lasContaminationDateFrance = 0 ;
- 				int lasContaminationDateSpain = 0 ;
- 				int lasContaminationDateItaly = 0 ;
+ 				int lasContaminationDateFrance =  readerFrance.getLastContaminationDate() ;
+ 				int lasContaminationDateSpain = readerSpain.getLastContaminationDate() ;
+ 				int lasContaminationDateItaly = readerItaly.getLastContaminationDate() ;
  				
- 				Map<Person,Integer> result = parser.generateFinalResult(resultSpain, lasContaminationDateSpain, resultFrance, lasContaminationDateFrance, resultItaly, lasContaminationDateItaly, myDirectory, SlashOrTwoBackSlash );
+ 				result = parser.generateFinalResult(resultSpain, lasContaminationDateSpain, resultFrance, lasContaminationDateFrance, resultItaly, lasContaminationDateItaly, myDirectory, SlashOrTwoBackSlash );
  				
 // 				System.out.println("Top 3 global");
 // 				for (Person key : result.keySet()) {

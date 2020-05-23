@@ -26,6 +26,9 @@ public class ReaderThread implements Runnable{
 	String SlashOrTwoBackSlash = properties.get(1);
 	int lasContaminationDate = 0;
 	
+	public int getLastContaminationDate() {
+		return lasContaminationDate;
+	}
 	String file;
 	
 	Map<Person,Integer> result = new HashMap<Person,Integer>();
