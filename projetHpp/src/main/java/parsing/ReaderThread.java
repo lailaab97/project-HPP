@@ -35,6 +35,7 @@ public class ReaderThread implements Runnable{
 	
 	//the name of the file (here the country)
 	String file;
+	
 	//the map of the results of this file
 	Map<Person,Integer> result = new HashMap<Person,Integer>();	
 	File myDirectory = new File(path);
@@ -44,39 +45,41 @@ public class ReaderThread implements Runnable{
 		return lasContaminationDate;
 
 	}
+	
 	public Map<Person, Integer> getResult() {
 		return result;
 	}
+	
 	//Constructor 
 	  public ReaderThread(BlockingQueue<String> blockingQueue,String file){
 	    this.blockingQueue = blockingQueue;     
 	    this.file = file;
 	  }
 
+	  
   @Override
   public void run() {
-     try {
-    	 		//we stock the result of the process of the file in result
- 				result = parser.fetchCsvFileData(myDirectory, file, SlashOrTwoBackSlash);
- 				if(result != null) {
- 					if(result.size()>1)
- 						//we register the last date of contamination registered
- 						//since result is a linkedHashMap and the results are stored from  old to new we need to get the new one
- 				lasContaminationDate = parser.getLast(result).getKey().getDiagnosed_ts();
- 				}
- 	            blockingQueue.put("EOF");  //When end of file has been reached
-
-
-        } catch (FileNotFoundException e) {
-
-            System.out.println("Error in ReaderThread : could not find the path");
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        } catch(InterruptedException e){
-
-        
-        }
+	     try {
+	    	 		//we stock the result of the process of the file in result
+	 				result = parser.fetchCsvFileData(myDirectory, file, SlashOrTwoBackSlash);
+	 				if(result != null) {
+	 					if(result.size()>1)
+	 						//we register the last date of contamination registered
+	 						//since result is a linkedHashMap and the results are stored from  old to new we need to get the new one
+	 				lasContaminationDate = parser.getLast(result).getKey().getDiagnosed_ts();
+	 				}
+	 	            blockingQueue.put("EOF");  //When end of file has been reached
+	
+	
+	        } catch (FileNotFoundException e) {
+	
+	            System.out.println("Error in ReaderThread : could not find the path");
+	        } catch (IOException e) {
+	
+	            e.printStackTrace();
+	        } catch(InterruptedException e){
+	        	e.printStackTrace();
+	        }
 
 
   }
