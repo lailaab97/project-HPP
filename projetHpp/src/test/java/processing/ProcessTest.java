@@ -137,27 +137,27 @@ public class ProcessTest {
 		
 		trees=process.process(person1,trees);
 		expected.put(person1, 10);
-		Assert.assertTrue(process.generate(trees,"France").equals(expected));
+		Assert.assertTrue(process.generate(trees).equals(expected));
 		
 		trees=process.process(person2,trees);
 		expected.put(person1, 14);
-		Assert.assertTrue(process.generate(trees,"France").equals(expected));
+		Assert.assertTrue(process.generate(trees).equals(expected));
 		
 		trees=process.process(person3,trees);
 		expected.remove(person1);
 		expected.put(person2, 4);
 		expected.put(person3, 10);
-		Assert.assertTrue(process.generate(trees,"France").equals(expected));
+		Assert.assertTrue(process.generate(trees).equals(expected));
 		
 		trees=process.process(person4,trees);
 		expected.put(person2, 4);
 		expected.put(person3, 20);
-		Assert.assertTrue(process.generate(trees,"France").equals(expected));
+		Assert.assertTrue(process.generate(trees).equals(expected));
 		
 		trees=process.process(person5,trees);
 		expected.remove(person2);
 		expected.put(person3, 18);	
-		Assert.assertTrue(process.generate(trees,"France").equals(expected));
+		Assert.assertTrue(process.generate(trees).equals(expected));
 			 
 	}
     
