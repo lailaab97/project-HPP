@@ -20,8 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,8 +84,10 @@ public class DataParsing {
 		
 		//the list of all the trees available
 		List<Tree> mainListOfResults = new ArrayList<Tree>();
+		
 		//we instantiate the class Process
 		Process processLine = new Process() ;
+		
 		//For the output :
 		String line = "";
 		String[] lineInfos;
@@ -98,6 +98,7 @@ public class DataParsing {
 			//The filereader and the buffer reader for reading the csv of the current country
 	        FileReader fr = new FileReader( directory+SlashOrTwoBackSlash+file );
 	        BufferedReader br = new BufferedReader( fr );
+	        
 	        //The person's info
 			int person_id;
 			int diagnosed_ts;
@@ -143,8 +144,6 @@ public class DataParsing {
 							//we get the top 3 result by country
 							result = processLine.generateResultByCountry(mapOfIdsAndScores);
 
-							//Debug
-							//System.out.println("********Event "+cpt);
 							
 							// Storing processed data fort the current line in the current country
 							StoreResultData(bw, result);						
@@ -154,8 +153,9 @@ public class DataParsing {
 							br.close();
            
         	} catch (FileNotFoundException e) {
-        		//e.printStackTrace();
+        		
         		System.out.println("File not found!");
+        		
             } catch(IOException ioe) {
                ioe.printStackTrace();
                
@@ -193,12 +193,9 @@ public class DataParsing {
 					csvWriter.write(dataLine+"\n");
 		    	    csvWriter.flush();
 		    	    
-					//Debug
-		    	    System.out.println(dataLine);
 		    	    
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					//System.out.println(("yes"));
 				}
 
 		
@@ -219,6 +216,7 @@ public class DataParsing {
 			
 			try {
 				
+				// Reading location path
 				path = Paths.get(ClassLoader.getSystemResource(Location).toURI());
 				
 				try(BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
@@ -449,7 +447,7 @@ public class DataParsing {
 				
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				//e1.printStackTrace();
+
 				System.out.println("Path not find where to store !");
 			}
 	  
