@@ -106,4 +106,7 @@ In the next pages, there are 6 unit tests, 2 for each country with all the outpu
 
 **Note**
 
-Before running the java program please make sure to add the corresponding data folder's path in the path.properties text file in src/main/resource/properties folder.
+Before running the java program please make sure to add the corresponding data folder's path in the path.properties text file in src/main/resource/properties folder. 
+Uncomment/Comment the line of your choice to select the execution method od the program (with/without threads).
+
+
