@@ -62,12 +62,11 @@ public class ReaderThread implements Runnable{
 	     try {
 	    	 		//we stock the result of the process of the file in result
 	 				result = parser.fetchCsvFileData(myDirectory, file, SlashOrTwoBackSlash);
-	 				if(result != null) {
-	 					if(result.size()>1)
+	 				
 	 						//we register the last date of contamination registered
 	 						//since result is a linkedHashMap and the results are stored from  old to new we need to get the new one
 	 				lasContaminationDate = parser.getLast(result).getKey().getDiagnosed_ts();
-	 				}
+	 				
 	 	            blockingQueue.put("EOF");  //When end of file has been reached
 	
 	
