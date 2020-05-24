@@ -81,6 +81,8 @@ public class Process{
 	        return trees;
         }
 	
+    
+    
 	/**
 	 * This method computes the score of a chain , by calculating the sum of all its nodes
 	 * @param Node : the root of the chain
@@ -102,6 +104,8 @@ public class Process{
 		 
 	 }
 	 
+	 
+	 
 	 /**
 	  * This method generate the map which contains all the roots of the chains of contamination and their scores
 	  * @param trees : the list of trees containing chains of contamination
@@ -119,6 +123,8 @@ public class Process{
 	        return scores;
 	        		
 	        }
+	 
+	 
 	 
 	   /**
 	    * This method deletes nodes and handles the new additions and deletions of the list of trees
@@ -151,6 +157,7 @@ public class Process{
 	    	return trees;
 	    	}
 
+	 
 	 /**
 	  * This method runs the algorithm to keep up with the trees still alive after each entry
 	  * @param person : the new person that we are going to treat
@@ -205,102 +212,102 @@ public class Process{
 		 return trees;
 
 	 }
-/**
- * Generate the top 3 of a country
- * @param mapOfIdsAndScores : the map that contains all potential chains of contamiantion
- * @return map of the 3 top of the country
- * */
-public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfIdsAndScores) {
-		 
-		 Map<Person,Integer> result=new LinkedHashMap<Person,Integer>();
-		 
-		 //convert mapOfIdsAndScores to two lists of scores and ids
-		 //each index in the id list correspond to its value in the scores list at the same index
-		 List<Integer> scores=new ArrayList<>();
-		 scores.addAll(mapOfIdsAndScores.values());
-		 
-		 List<Person> id=new ArrayList<>();
-		 id.addAll(mapOfIdsAndScores.keySet());
-		 
-		//initialize counter of elements in result 
-		 int cmpt=0;
-		 
-		 // search for max in scores
-		 int max=Collections.max(scores);
-		 
-		 while(cmpt<3 && scores.size()!=0 && max!=0) {
+	/**
+	 * Generate the top 3 of a country
+	 * @param mapOfIdsAndScores : the map that contains all potential chains of contamiantion
+	 * @return map of the 3 top of the country
+	 * */
+	public Map<Person,Integer> generateResultByCountry (Map<Person, Integer> mapOfIdsAndScores) {
 			 
-			 // if the maximum score exists more than once
-			 if (Collections.frequency(scores, max)!=1) {
+			 Map<Person,Integer> result=new LinkedHashMap<Person,Integer>();
+			 
+			 //convert mapOfIdsAndScores to two lists of scores and ids
+			 //each index in the id list correspond to its value in the scores list at the same index
+			 List<Integer> scores=new ArrayList<>();
+			 scores.addAll(mapOfIdsAndScores.values());
+			 
+			 List<Person> id=new ArrayList<>();
+			 id.addAll(mapOfIdsAndScores.keySet());
+			 
+			//initialize counter of elements in result 
+			 int cmpt=0;
+			 
+			 // search for max in scores
+			 int max=Collections.max(scores);
+			 
+			 while(cmpt<3 && scores.size()!=0 && max!=0) {
 				 
-				 // create variables to add ids that have the same score
-				 List<Person> restOfIds=new ArrayList<>();
-				 
-				 //dates to store dates of contamination of root
-				 List<Integer> dates=new ArrayList<>();
-				 
-				 // look for first index of max
-				 int index=scores.indexOf(max);
-				 
-				 //while max exists in scores
-				 while(index!=-1) {
-					 //add id and date to lists
-					 restOfIds.add(id.get(index));
-					 dates.add(id.get(index).getDiagnosed_ts());
+				 // if the maximum score exists more than once
+				 if (Collections.frequency(scores, max)!=1) {
 					 
-					 //remove score and id from original lists
+					 // create variables to add ids that have the same score
+					 List<Person> restOfIds=new ArrayList<>();
+					 
+					 //dates to store dates of contamination of root
+					 List<Integer> dates=new ArrayList<>();
+					 
+					 // look for first index of max
+					 int index=scores.indexOf(max);
+					 
+					 //while max exists in scores
+					 while(index!=-1) {
+						 //add id and date to lists
+						 restOfIds.add(id.get(index));
+						 dates.add(id.get(index).getDiagnosed_ts());
+						 
+						 //remove score and id from original lists
+						 scores.remove(index);
+						 id.remove(index);
+						 
+						 //update index of max
+						 index=scores.indexOf(max);
+					 }
+					 
+					 // while counter<3 : less than three elements in result
+					 // and while there's still elements in the lists
+					 while(cmpt<3 && restOfIds.size()!=0) {
+						 
+						 //get index of minimum of dates
+						 int min=dates.indexOf(Collections.min(dates));
+						 
+						 //add score and id to result
+						 result.put(restOfIds.get(min),max);
+						 
+						 //remove id and date from lists
+						 restOfIds.remove(min);
+						 dates.remove(min);
+						 
+						 //update counter
+						 cmpt++;
+						 
+					 }
+	 			 }
+				 // if max score only occures once
+				 else {
+					 
+					 //get index of max
+					 int index=scores.indexOf(max);
+					 
+					 //add id and score to result
+					 result.put(id.get(index),max);
+					 
+					 //update counter after adding to result
+					 cmpt++;
+					 
+					 //remove element from both lists to look for the new max
 					 scores.remove(index);
 					 id.remove(index);
 					 
-					 //update index of max
-					 index=scores.indexOf(max);
+				 }
+				 //update max value while if there's still elements in the score lists
+				 if (scores.size()!=0) {
+					 max=Collections.max(scores);
 				 }
 				 
-				 // while counter<3 : less than three elements in result
-				 // and while there's still elements in the lists
-				 while(cmpt<3 && restOfIds.size()!=0) {
-					 
-					 //get index of minimum of dates
-					 int min=dates.indexOf(Collections.min(dates));
-					 
-					 //add score and id to result
-					 result.put(restOfIds.get(min),max);
-					 
-					 //remove id and date from lists
-					 restOfIds.remove(min);
-					 dates.remove(min);
-					 
-					 //update counter
-					 cmpt++;
-					 
-				 }
- 			 }
-			 // if max score only occures once
-			 else {
-				 
-				 //get index of max
-				 int index=scores.indexOf(max);
-				 
-				 //add id and score to result
-				 result.put(id.get(index),max);
-				 
-				 //update counter after adding to result
-				 cmpt++;
-				 
-				 //remove element from both lists to look for the new max
-				 scores.remove(index);
-				 id.remove(index);
-				 
 			 }
-			 //update max value while if there's still elements in the score lists
-			 if (scores.size()!=0) {
-				 max=Collections.max(scores);
-			 }
-			 
+			 return result;
 		 }
-		 return result;
-	 }
-	
+		
  
 
 	 
