@@ -67,15 +67,15 @@ public class MainClass {
 	/**
 	 * lasContaminationDateFrance : Last date of contamination in France
 	 * */
-	static int lasContaminationDateFrance = 0 ;
+	static int lasContaminationDateFrance = 0;
 	/**
 	 * lasContaminationDateSpain : Last date of contamination in Spain
 	 * */
-	static int lasContaminationDateSpain = 0 ;
+	static int lasContaminationDateSpain = 0;
 	/**
 	 * lasContaminationDateItaly : Last date of contamination in Italy
 	 * */
-	static int lasContaminationDateItaly = 0 ;
+	static int lasContaminationDateItaly  = 0;
 	
 	/**
 	 * This method executes process using Threads
@@ -207,9 +207,9 @@ public class MainClass {
 		
 		
 	//Execute process with threads
-		//executeThreads();
+		executeThreads();
 	//Execute process without threads
-		executeWithoutThreads();
+		//executeWithoutThreads();
 		
 	}
 
