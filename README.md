@@ -101,9 +101,8 @@ Spain 16,10 ; Italy 17,10 ; Italy 18,10
 
 https://docs.google.com/document/d/1uLod9J6Suwz9nzrftwqANzigvfQRlCXq1FzyG89cSbw/edit?usp=sharing
 
-This document explains, in the first page, the process used in the algorithm, the structures selected and the rules we choose to go by. 
-
-In the next page, there are 6 unit tests, 2 for each country with all the output steps of data processing and the final result.
+This document explains, in the first page, the process used in the algorithm, the structures selected and the rules we choose to go by.
+In the next pages, there are 6 unit tests, 2 for each country with all the output steps of data processing and the final result.
 
 **Note**
 
