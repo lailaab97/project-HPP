@@ -1,5 +1,22 @@
 # project-HPP
 
+
+
+The purpose of this project is processing COVID-19 related data of three countries, France Spain and Italy, and pick the three longest contamination chains.
+
+**Drive Link**
+
+https://docs.google.com/document/d/1uLod9J6Suwz9nzrftwqANzigvfQRlCXq1FzyG89cSbw/edit?usp=sharing
+
+This document explains, in the first page, the process used in the algorithm, the structures selected and the rules we choose to go by.
+In the next pages, there are 6 unit tests, 2 for each country with all the output steps of data processing and the final result.
+
+**Note**
+
+Before running the java program please make sure to add the corresponding data folder's path in the path.properties text file in src/main/resource/properties folder. 
+Uncomment/Comment the line of your choice to select the execution method od the program (with/without threads).
+
+
 _Test Cases Examples_
 
 **Example 1**
@@ -74,11 +91,28 @@ Process
 Step 1 result: Italy 1,10
 Step 2 result: Italy 6,10
 Step 3 result: Italy 10,10
-Step 4 result: Italy 10,4 ; Italy 14,10
-Step 5 result: Italy 15,10
-Step 6 result: Italy 17, 10 ; Italy 18, 10
+Step 4 result: Italy 10,4 ; Italy 12,10
+Step 5 result: Italy 15,10; Italy 12,4
+Step 6 result: Italy 17, 10 ; Italy 15, 4 
+Step 7 result: Italy 15,4 ; Italy 17,10; Italy 18,10 
 ```
 Final Output
 ```
-Italy 17, 10 ; Italy 18, 10
+Italy 15,4 ; Italy 17,10; Italy 18,10 
 ```
+
+**Final result of the 3 examples above**
+
+Process
+
+```
+Step 1 : compare score : All scores are equal
+Step 2 : compare last dates of contamination : Spain < Italy < France 
+```
+Final Output, Top 3 chains of Europe: 
+```
+Spain 16,10 ; Italy 17,10 ; Italy 18,10
+```
+
+
+
