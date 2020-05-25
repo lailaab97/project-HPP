@@ -3,8 +3,10 @@ package processing;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -18,8 +20,8 @@ import structure.Tree;
 public class ProcessTest {
 
 
-	Person person1,person2,person3,person4,person5,person6,person7 ;
-	Node node1,node2,node3,node4,node5,node6,node7;
+	Person person1,person2,person3,person4,person5,person6,person7,person8,person9,person10,person11;
+	Node node1,node2,node3,node4,node5,node6,node7,node8,node9,node10,node11;
 
 	Process process ;
 	List<Tree> trees;
@@ -33,7 +35,10 @@ public class ProcessTest {
 		person5=new Person(8, 1589080028, 7,"France",10);   //10-05
 		person6=new Person(9, 1589512028, 7,"France",10);   //15-05
 		person7=new Person(10, 1589944028,8,"France",10);   //20-05
-
+		person8=new Person(11, 1590030428,-1,"France",10);  //21-05
+		person9=new Person(12, 1590116828,11,"France",10);  //22-05
+		person10=new Person(13, 1590289628,-1,"France",10); //24-05
+		person11=new Person(14, 1590376028,-1,"France",10); //25-05
 		
 	    node1 =new Node(person1);
 		node2=new Node(person2);
@@ -42,6 +47,11 @@ public class ProcessTest {
 	    node5=new Node(person5);
 	    node6=new Node(person6);
 	    node7=new Node(person7);
+	    node8=new Node(person8);
+	    node9=new Node(person9);
+	    node10=new Node(person10);
+	    node11=new Node(person11);
+	    
 	    
 	    process = new Process();
 		
@@ -142,6 +152,8 @@ public class ProcessTest {
 		trees=process.process(person2,trees);
 		expected.put(person1, 14);
 		Assert.assertTrue(process.generate(trees).equals(expected));
+		
+		
 		
 		trees=process.process(person3,trees);
 		expected.remove(person1);
@@ -261,6 +273,50 @@ public class ProcessTest {
 		Assert.assertEquals(trees.get(0).getRoot(),node2);
 		Assert.assertEquals(trees.get(1).getRoot(),node3);
 	}
+	
+	
+	@Test
+	public void testGenerateResultByCountry() {
+		
+		trees=new ArrayList<Tree>();
+		Map<Person,Integer> map=new HashMap<Person,Integer>();
+		trees=process.process(person1,trees);
+		
+		
+		map=process.generate(trees);
+		
+		trees=process.process(person2,trees);
+		map=process.generate(trees);
+		trees=process.process(person4,trees);
+		map=process.generate(trees);
+		trees=process.process(person6,trees);
+		map=process.generate(trees);
+		trees=process.process(person7,trees);
+		map=process.generate(trees);
+		trees=process.process(person8,trees);
+		map=process.generate(trees);
+		trees=process.process(person9,trees);		
+		map=process.generate(trees);
+		trees=process.process(person10,trees);
+		map=process.generate(trees);
+		trees=process.process(person11,trees);
+		map=process.generate(trees);
+		
+		
+		
+		Map<Person,Integer> expected;
+		//the expected map
+		expected=new LinkedHashMap<Person,Integer>();
+		expected.put(person8,20);
+		expected.put(person7,10);
+		expected.put(person10,10);
+		
+		Assert.assertEquals(process.generateResultByCountry(map),expected);
+		
+		
+		
+	}
+	
  
 	@After
 	public void tearDown()  {
@@ -271,6 +327,10 @@ public class ProcessTest {
 		person5=null;
 		person6=null;
 		person7=null;
+		person8=null;
+		person9=null;
+		person10=null;
+		person11=null;
 	    node1=null;
 		node2=null;
 		node3=null;
@@ -278,6 +338,10 @@ public class ProcessTest {
 	    node5=null;
 	    node6=null;
 	    node7=null;
+	    node8=null;
+	    node9=null;
+	    node10=null;
+	    node11=null;
 	    trees=null;
 	    
 	}

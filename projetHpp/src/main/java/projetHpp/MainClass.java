@@ -207,10 +207,10 @@ public class MainClass {
 		
 		
 	//Execute process with threads
-		//executeThreads();
+		executeThreads();
 		
 	//Execute process without threads
-		executeWithoutThreads();
+		//executeWithoutThreads();
 		
 	}
 
