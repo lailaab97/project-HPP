@@ -114,5 +114,7 @@ Final Output, Top 3 chains of Europe:
 Spain 16,10 ; Italy 17,10 ; Italy 18,10
 ```
 
+**Performance Plot (Execution Time per input data)**
+![](performance_plot.png)
 
 
